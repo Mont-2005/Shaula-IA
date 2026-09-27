@@ -1,407 +1,1117 @@
-# Manual de Comandos da Shaula
+# Manual de Uso e Comandos — Shaula IA 3.50
 
-A Shaula é uma assistente pessoal local capaz de controlar algumas funções do computador, trabalhar com arquivos, realizar cálculos, controlar a internet e gerenciar janelas e monitores.
+Este manual descreve os recursos que existem na Shaula IA 3.50 auditada.
 
-Os comandos podem ser dados em linguagem natural. Não é necessário usar exatamente as frases dos exemplos.
+A Shaula é uma assistente pessoal local para Windows. Ela conversa por meio do modelo `qwen3.5:9b`, executado pelo Ollama, e pode usar ferramentas para cálculos, arquivos, programas, janelas, sistema, rede, internet, lembretes, captura de tela e área de transferência.
+
+Os comandos podem ser dados em linguagem natural. Não é necessário decorar frases exatas nem escrever o nome interno da ferramenta.
+
+Exemplos:
+
+- "Abra o Discord."
+- "Mostre os programas que mais usam memória."
+- "Crie um lembrete para eu estudar daqui a 30 minutos."
+- "Tire um print do monitor 2."
+- "Pesquise as notícias de hoje."
+
+A Shaula interpreta a intenção e escolhe a ferramenta apropriada quando necessário.
 
 ---
 
-## 1. Abrir programas
+## 1. Como iniciar a Shaula
+
+A forma normal de iniciar a versão gráfica é executar:
+
+`Shaula.bat`
+
+O launcher verifica o Ollama, inicia o servidor se necessário e depois abre `interface.py` usando o Python do ambiente virtual da Shaula.
+
+Existe também `main.py`, um modo de linha de comando independente. Ele possui apenas um subconjunto das ferramentas da versão gráfica.
+
+### Ferramentas disponíveis no modo CLI
+
+O modo `main.py` possui:
+
+- abrir programa;
+- buscar arquivo;
+- abrir arquivo;
+- cálculos comuns;
+- operações com matrizes;
+- conversão de bases numéricas.
+
+Para usar todos os recursos descritos neste manual, use a interface gráfica iniciada por `Shaula.bat`.
+
+---
+
+## 2. Conversar com a Shaula
+
+Digite normalmente no campo de mensagem e envie sua pergunta ou comando.
+
+A Shaula pode:
+
+- responder perguntas;
+- conversar normalmente;
+- executar ferramentas do computador;
+- consultar anexos enviados na mensagem atual;
+- pesquisar na internet quando o modo de internet estiver ativado.
+
+Exemplos:
+
+- "Explique o que é memória RAM."
+- "Calcule 125 vezes 37."
+- "Abra o Chrome."
+- "Qual programa está usando mais memória?"
+
+A resposta não usa streaming nesta versão: o texto aparece quando a inferência termina.
+
+---
+
+## 3. Gerenciar conversas
+
+A versão 3.50 suporta várias conversas salvas.
+
+Na barra lateral, você pode:
+
+- selecionar uma conversa;
+- criar uma conversa nova;
+- renomear uma conversa;
+- fixar ou desafixar uma conversa;
+- apagar uma conversa;
+- abrir uma conversa em outra janela.
+
+### Criar uma conversa
+
+Clique em:
+
+`+  Nova conversa`
+
+A conversa vazia passa a ser a conversa atual.
+
+### Selecionar uma conversa
+
+Clique no nome dela na barra lateral.
+
+Se a Shaula ainda estiver processando uma resposta, espere a resposta terminar antes de trocar de conversa.
+
+### Renomear, fixar, apagar ou abrir em outra janela
+
+Clique com o botão direito sobre a conversa na barra lateral.
+
+O menu oferece:
+
+- `Abrir em nova janela`;
+- `Renomear`;
+- `Fixar` ou `Desafixar`;
+- `Apagar`.
+
+Apagar pelo menu remove a conversa definitivamente e pede confirmação antes de concluir.
+
+### Limpar somente a conversa atual por comando
+
+Você também pode escrever frases como:
+
+- "Excluir conversa."
+- "Apagar conversa."
+- "Limpar conversa."
+- "Esquecer conversa."
+- "Apagar histórico."
+- "Limpar memória."
+
+Esse comando limpa o histórico da conversa atual. As outras conversas continuam existindo.
+
+---
+
+## 4. Anexar arquivos
+
+A Shaula 3.50 aceita anexos na interface gráfica.
+
+Você pode:
+
+- clicar no botão `+` ao lado do campo de mensagem;
+- arrastar um arquivo para o campo de mensagem;
+- arrastar um arquivo para qualquer área da janela da Shaula.
+
+Os anexos aparecem acima do campo de mensagem antes do envio e podem ser removidos antes de mandar a mensagem.
+
+### Tipos suportados
+
+#### Imagens
+
+Extensões:
+
+- `.png`
+- `.jpg`
+- `.jpeg`
+- `.webp`
+- `.bmp`
+- `.gif`
+
+Limite: 25 MB por arquivo.
+
+Imagens grandes são redimensionadas para no máximo 1568 pixels no maior lado antes de serem enviadas ao modelo.
+
+#### PDFs
+
+Extensão:
+
+- `.pdf`
+
+Limite: 50 MB.
+
+Se o PDF tiver texto, a Shaula tenta extrair esse texto. Se parecer um PDF escaneado, ele é convertido em imagens, com no máximo 8 páginas processadas.
+
+Texto extraído de PDF é limitado a 12.000 caracteres.
+
+#### Vídeos
+
+Extensões:
+
+- `.mp4`
+- `.mov`
+- `.avi`
+- `.mkv`
+- `.webm`
+
+Limite: 300 MB.
+
+A Shaula não assiste ao vídeo continuamente. Ela extrai até 6 frames distribuídos pelo vídeo e os envia como imagens para o modelo.
+
+O áudio do vídeo não é processado.
+
+#### Texto e código
+
+Extensões suportadas incluem:
+
+- `.txt`
+- `.md`
+- `.markdown`
+- `.log`
+- `.csv`
+- `.json`
+- `.yaml`
+- `.yml`
+- `.xml`
+- `.ini`
+- `.cfg`
+- `.py`
+- `.js`
+- `.ts`
+- `.java`
+- `.c`
+- `.cpp`
+- `.h`
+- `.cs`
+- `.sql`
+- `.bat`
+- `.sh`
+- `.html`
+- `.css`
+
+Limite: 5 MB.
+
+O conteúdo usado na interação é limitado a 12.000 caracteres.
+
+### Exemplos com anexos
+
+Depois de anexar um arquivo, você pode perguntar:
+
+- "Resuma este PDF."
+- "Explique o que este código faz."
+- "Encontre possíveis erros neste arquivo Python."
+- "O que aparece nesta imagem?"
+- "Faça um resumo do que aparece neste vídeo."
+
+### Anexos e histórico
+
+O conteúdo completo do anexo não é salvo no histórico permanente da conversa.
+
+A Shaula salva apenas uma nota indicando que o arquivo foi anexado. O conteúdo integral é usado somente na interação em que o arquivo foi enviado.
+
+---
+
+## 5. Abrir programas
 
 A Shaula pode localizar e abrir programas instalados no Windows.
 
-### Exemplos
+Exemplos:
 
-* "Abra o Discord."
-* "Abra o Chrome."
-* "Abra o Steam."
-* "Abra o Bloco de Notas."
-* "Abra o Firefox."
+- "Abra o Discord."
+- "Abra o Chrome."
+- "Abra o Steam."
+- "Abra o Bloco de Notas."
+- "Abra o Firefox."
 
-A Shaula utiliza a ferramenta `abrir_programa` para localizar o programa.
+Ferramenta interna:
 
----
-
-# 2. Trabalhar com arquivos
-
-A Shaula pode procurar arquivos pelo nome e abrir arquivos encontrados.
-
-## Procurar um arquivo
-
-### Exemplos
-
-* "Procure o arquivo trabalho.docx."
-* "Encontre o relatório.pdf."
-* "Procure minha apresentação."
-* "Encontre o arquivo teste na unidade D."
-
-A ferramenta utilizada é `buscar_arquivo`.
-
-## Abrir um arquivo
-
-Se você tiver o caminho completo:
-
-* "Abra C:\Users\Gabriel\Documents\teste.txt"
-
-A Shaula utiliza `abrir_arquivo`.
+`abrir_programa`
 
 ---
 
-# 3. Controlar os monitores
+## 6. Fechar programas
 
-A Shaula consegue identificar os monitores conectados ao Windows e mover janelas entre eles.
+A Shaula pode fechar um programa pelo nome.
 
-## Ver os monitores
+Exemplos:
 
-Use:
+- "Feche o Spotify."
+- "Feche o Chrome."
+- "Encerre o Discord."
 
-* "Liste meus monitores."
-* "Quais monitores estão conectados?"
-* "Quantos monitores eu tenho?"
+Ferramenta interna:
 
-A Shaula responderá usando a numeração do Windows:
+`fechar_programa`
 
-* Monitor 1
-* Monitor 2
-* Monitor 3
-* etc.
+A ferramenta pode fechar todas as janelas/processos associados ao nome informado. Salve seu trabalho antes de pedir para fechar um aplicativo com conteúdo não salvo.
 
 ---
 
-## 4. Mover um programa para um monitor específico
+## 7. Trabalhar com arquivos
 
-Você pode dizer:
+### Procurar um arquivo
 
-* "Mova o Discord para o monitor 2."
-* "Coloque o Chrome no monitor 1."
-* "Mova o Firefox para o monitor 2."
-* "Coloque o Steam no monitor 3."
+Exemplos:
 
-A estrutura básica é:
+- "Procure o arquivo trabalho.docx."
+- "Encontre o relatório.pdf."
+- "Procure minha apresentação."
+- "Encontre o arquivo teste na unidade D."
 
-**"Mova [programa] para o monitor [número]."**
+Ferramenta interna:
 
-Exemplo:
+`buscar_arquivo`
 
-**"Mova o Discord para o monitor 2."**
+A busca pode ser feita em uma unidade específica ou nos discos disponíveis.
 
-A Shaula procura a janela correspondente e a move para o monitor solicitado.
+### Abrir um arquivo
 
----
+Se você souber o caminho completo, pode pedir:
 
-# 5. Mover um programa para outra tela
+- "Abra C:\\Users\\Usuario\\Documents\\teste.txt"
 
-Quando você não quiser especificar o número do monitor:
+Ferramenta interna:
 
-* "Mova o Discord para a outra tela."
-* "Coloque o Chrome no outro monitor."
-* "Mova o Firefox para o outro monitor."
-
-A Shaula identifica o monitor em que o programa está e tenta colocá-lo em outro monitor disponível.
+`abrir_arquivo`
 
 ---
 
-## 6. Quando existem várias janelas do mesmo programa
+## 8. Listar monitores
 
-Se houver várias janelas correspondentes, a Shaula não deve escolher aleatoriamente.
+A Shaula pode identificar os monitores conectados ao Windows.
 
-Por exemplo:
+Exemplos:
 
-**"Mova o Chrome para o monitor 2."**
+- "Liste meus monitores."
+- "Quais monitores estão conectados?"
+- "Quantos monitores eu tenho?"
+- "Qual é o monitor principal?"
 
-Se existirem várias janelas do Chrome, a Shaula poderá informar quais encontrou e pedir que você indique qual deseja mover.
+Ferramenta interna:
 
----
-
-# 7. Abrir o Menu Iniciar
-
-Você pode dizer:
-
-* "Abra o Menu Iniciar."
-* "Abra o Iniciar."
-* "Abra o menu do Windows."
-
-A Shaula utiliza a ferramenta `abrir_menu_iniciar`.
+`listar_monitores`
 
 ---
 
-# 8. Informações do computador
+## 9. Listar janelas abertas
+
+A Shaula pode listar os títulos das janelas abertas no momento.
+
+Exemplos:
+
+- "Liste as janelas abertas."
+- "Quais janelas estão abertas?"
+- "Mostre os aplicativos que têm janela aberta."
+
+Ferramenta interna:
+
+`listar_janelas_abertas`
+
+Esse recurso é útil quando existem várias janelas parecidas e você quer saber qual nome usar em outro comando.
+
+---
+
+## 10. Mover uma janela para um monitor específico
+
+Exemplos:
+
+- "Mova o Discord para o monitor 2."
+- "Coloque o Chrome no monitor 1."
+- "Mova o Firefox para o monitor 2."
+- "Coloque o Steam no monitor 3."
+
+Estrutura básica:
+
+`Mova [programa] para o monitor [número].`
+
+Ferramenta interna:
+
+`mover_programa_monitor`
+
+Se houver várias janelas correspondentes, a Shaula pode informar as encontradas em vez de escolher uma arbitrariamente.
+
+---
+
+## 11. Mover uma janela para outro monitor
+
+Quando você não quiser informar o número do monitor:
+
+- "Mova o Discord para a outra tela."
+- "Coloque o Chrome no outro monitor."
+- "Mova o Firefox para o outro monitor."
+
+Ferramenta interna:
+
+`mover_para_outro_monitor`
+
+A Shaula tenta identificar o monitor atual da janela e escolher outro monitor disponível.
+
+---
+
+## 12. Controlar uma janela
+
+A Shaula pode controlar uma janela aberta pelo nome ou por parte do título.
+
+Ações disponíveis:
+
+- minimizar;
+- maximizar;
+- restaurar;
+- fechar;
+- focar/trazer para frente.
+
+Exemplos:
+
+- "Minimize o Chrome."
+- "Maximize o Discord."
+- "Restaure a janela do Bloco de Notas."
+- "Traga o Spotify para frente."
+- "Feche a janela do Calculadora."
+
+Ferramenta interna:
+
+`controlar_janela`
+
+---
+
+## 13. Abrir o Menu Iniciar
+
+Exemplos:
+
+- "Abra o Menu Iniciar."
+- "Abra o Iniciar."
+- "Abra o menu do Windows."
+
+Ferramenta interna:
+
+`abrir_menu_iniciar`
+
+---
+
+## 14. Tirar captura de tela
+
+A Shaula pode tirar screenshots do monitor principal, de um monitor específico ou de todos os monitores.
+
+Ferramenta interna:
+
+`tirar_print`
+
+### Capturar o monitor principal
+
+- "Tire um print."
+- "Faça uma captura de tela."
+
+### Capturar um monitor específico
+
+- "Tire um print do monitor 2."
+- "Capture a tela 1."
+
+### Capturar todos os monitores
+
+- "Tire um print de todos os monitores."
+
+Quando todos os monitores são capturados, é criado um arquivo para cada monitor.
+
+### Captura com atraso
+
+- "Tire um print daqui a 5 segundos."
+- "Capture o monitor 2 em 3 segundos."
+
+### Destino da captura
+
+Quando aplicável, a captura pode ir para:
+
+- arquivo;
+- área de transferência;
+- ambos.
+
+Exemplos:
+
+- "Tire um print e salve em arquivo."
+- "Tire um print e copie para a área de transferência."
+- "Tire um print e faça os dois."
+
+Quando a captura vai para arquivo, a Shaula salva o BMP na pasta `Shaula` dentro da pasta Imagens do Windows.
+
+---
+
+## 15. Área de transferência
+
+### Copiar texto
+
+Exemplos:
+
+- "Copie o texto 'Olá mundo'."
+- "Coloque esta frase na área de transferência: reunião às 14h."
+
+Ferramenta interna:
+
+`copiar_texto`
+
+### Ler o texto copiado
+
+Exemplos:
+
+- "O que está na minha área de transferência?"
+- "Leia o texto que está copiado."
+- "Cole aqui o que eu copiei."
+
+Ferramenta interna:
+
+`colar_texto`
+
+Essa ferramenta lê texto da área de transferência; ela não simula automaticamente Ctrl+V em outro programa.
+
+---
+
+## 16. Informações do computador
 
 A Shaula pode consultar informações do hardware e do sistema.
 
-### Exemplos
+Exemplos:
 
-* "Quais são as informações do meu computador?"
-* "Mostre as informações do hardware."
-* "Quais são as especificações do meu PC?"
-* "Me mostre o hardware."
+- "Quais são as informações do meu computador?"
+- "Mostre as informações do hardware."
+- "Quais são as especificações do meu PC?"
+- "Me mostre o hardware."
 
-A ferramenta utilizada é `informacoes_hardware`.
+Ferramenta interna:
 
----
-
-# 9. Testar a conexão
-
-A Shaula possui uma ferramenta de ping.
-
-### Exemplos
-
-* "Teste minha conexão."
-* "Faça um ping."
-* "Teste o ping do Google."
-* "Faça ping em 1.1.1.1."
-
-A ferramenta utilizada é `testar_ping`.
+`informacoes_hardware`
 
 ---
 
-# 10. Cálculos
+## 17. Bloquear a tela
+
+A Shaula pode bloquear a sessão do Windows, equivalente a usar `Win + L`.
+
+Exemplos:
+
+- "Bloqueie a tela."
+- "Bloqueie o computador."
+- "Bloqueie a tela daqui a 10 segundos."
+
+Ferramenta interna:
+
+`bloquear_tela`
+
+O atraso pode ser omitido para bloquear imediatamente.
+
+---
+
+## 18. Testar a conexão com ping
+
+Exemplos:
+
+- "Teste minha conexão."
+- "Faça um ping."
+- "Teste o ping do Google."
+- "Faça ping em 1.1.1.1."
+
+Ferramenta interna:
+
+`testar_ping`
+
+Se nenhum host for informado, a ferramenta usa `google.com`.
+
+---
+
+## 19. Ver o IP local
+
+A Shaula pode mostrar os endereços IP locais das interfaces de rede ativas.
+
+Exemplos:
+
+- "Qual é meu IP local?"
+- "Mostre os IPs da minha rede."
+- "Qual endereço IP este computador está usando na rede?"
+
+Ferramenta interna:
+
+`obter_ip_local`
+
+Esse recurso informa IP local da rede, não necessariamente o IP público da conexão com a internet.
+
+---
+
+## 20. Verificar o Wi-Fi
+
+A Shaula pode consultar a conexão Wi-Fi do Windows e informar a rede conectada e a força do sinal quando esses dados estiverem disponíveis.
+
+Exemplos:
+
+- "Em qual Wi-Fi estou conectado?"
+- "Qual é a força do sinal do Wi-Fi?"
+- "Verifique meu Wi-Fi."
+
+Ferramenta interna:
+
+`verificar_wifi`
+
+---
+
+## 21. Listar processos
+
+A Shaula pode mostrar os processos que mais consomem CPU ou memória.
+
+Exemplos:
+
+- "Quais processos estão usando mais CPU?"
+- "Mostre os 5 processos que mais usam memória."
+- "Liste os 10 processos mais pesados por CPU."
+
+Ferramenta interna:
+
+`listar_processos`
+
+O padrão é mostrar até 10 processos ordenados por CPU, a menos que você peça outro critério.
+
+---
+
+## 22. Processos protegidos
+
+A Shaula mantém uma lista de processos que não devem ser finalizados pela ferramenta de encerramento.
+
+Para consultar:
+
+- "Liste os processos protegidos."
+- "Quais processos a Shaula se recusa a finalizar?"
+
+Ferramenta interna:
+
+`listar_processos_protegidos`
+
+---
+
+## 23. Finalizar um processo
+
+A Shaula pode tentar finalizar um processo por nome ou PID.
+
+Exemplos:
+
+- "Finalize o processo notepad.exe."
+- "Encerre o processo de PID 1234."
+
+Ferramenta interna:
+
+`finalizar_processo`
+
+Se você informar um nome de processo, a ferramenta pode atingir todas as instâncias com aquele nome. Processos protegidos não são finalizados pela ferramenta.
+
+Use esse recurso com cuidado: finalizar um processo pode fechar um programa sem dar a ele a oportunidade de salvar alterações.
+
+---
+
+## 24. Cálculos comuns
 
 A Shaula pode realizar cálculos matemáticos.
 
-### Exemplos
+Exemplos:
 
-* "Calcule 125 vezes 37."
-* "Quanto é 500 dividido por 8?"
-* "Calcule 2 elevado a 10."
-* "Resolva 45 + 78 - 12."
+- "Calcule 125 vezes 37."
+- "Quanto é 500 dividido por 8?"
+- "Calcule 2 elevado a 10."
+- "Resolva 45 + 78 - 12."
 
-Para cálculos comuns, a ferramenta utilizada é `calcular`.
+Ferramenta interna:
+
+`calcular`
 
 ---
 
-# 11. Matrizes
+## 25. Matrizes
 
 A Shaula possui ferramentas específicas para operações matriciais.
 
 Ela pode realizar:
 
-* Soma de matrizes
-* Subtração de matrizes
-* Multiplicação de matrizes
-* Multiplicação por escalar
-* Transposta
-* Determinante
-* Matriz inversa
-* Potência de matriz
+- soma;
+- subtração;
+- multiplicação;
+- multiplicação por escalar;
+- transposta;
+- determinante;
+- inversa;
+- potência de matriz.
 
-### Exemplos
+Ferramentas internas:
 
-**Soma:**
+- `matriz_soma`
+- `matriz_subtracao`
+- `matriz_multiplicacao`
+- `matriz_escalar`
+- `matriz_transposta`
+- `matriz_determinante`
+- `matriz_inversa`
+- `matriz_potencia`
 
-"Some estas duas matrizes."
+Exemplos:
 
-**Subtração:**
-
-"Subtraia a matriz B da matriz A."
-
-**Multiplicação:**
-
-"Multiplique estas duas matrizes."
-
-**Determinante:**
-
-"Calcule o determinante dessa matriz."
-
-**Inversa:**
-
-"Calcule a inversa dessa matriz."
-
-**Transposta:**
-
-"Calcule a transposta."
+- "Some [[1,2],[3,4]] com [[5,6],[7,8]]."
+- "Subtraia a matriz B da matriz A."
+- "Multiplique estas duas matrizes."
+- "Multiplique esta matriz por 3."
+- "Calcule a transposta desta matriz."
+- "Calcule o determinante desta matriz."
+- "Calcule a inversa desta matriz."
+- "Eleve esta matriz ao quadrado."
 
 ---
 
-# 12. Conversão de bases numéricas
+## 26. Conversão de bases numéricas
 
-A Shaula também pode converter números entre bases.
+A Shaula pode converter números entre bases.
 
-### Exemplos
+Exemplos:
 
-* "Converta 101101 de binário para decimal."
-* "Converta 255 de decimal para hexadecimal."
-* "Converta FF de hexadecimal para decimal."
+- "Converta 101101 de binário para decimal."
+- "Converta 255 de decimal para hexadecimal."
+- "Converta FF de hexadecimal para decimal."
 
-A ferramenta utilizada é `converter_base`.
+Ferramenta interna:
 
----
-
-# 13. Desligar o computador
-
-A Shaula pode agendar o desligamento do computador.
-
-### Exemplos
-
-* "Desligue o computador em 60 segundos."
-* "Programe o computador para desligar em 5 minutos."
-
-A ferramenta utilizada é `desligar_computador`.
+`converter_base`
 
 ---
 
-# 14. Cancelar um desligamento
+## 27. Criar lembretes
+
+A Shaula pode criar lembretes locais com temporizador.
+
+Exemplos:
+
+- "Me lembre de beber água em 20 minutos."
+- "Crie um lembrete para estudar daqui a 1 hora."
+- "Me avise em 30 segundos para verificar o forno."
+
+Ferramenta interna:
+
+`criar_lembrete`
+
+Unidades aceitas:
+
+- segundos;
+- minutos;
+- horas.
+
+Quando o tempo termina, a Shaula tenta exibir uma notificação local no Windows.
+
+---
+
+## 28. Listar lembretes
+
+Para ver os lembretes que ainda não dispararam:
+
+- "Liste meus lembretes."
+- "Quais lembretes estão programados?"
+
+Ferramenta interna:
+
+`listar_lembretes`
+
+A lista informa os números usados para cancelamento.
+
+---
+
+## 29. Cancelar um lembrete
+
+Primeiro liste os lembretes para descobrir o número correspondente.
+
+Depois use, por exemplo:
+
+- "Cancele o lembrete 2."
+- "Remova o lembrete número 1."
+
+Ferramenta interna:
+
+`cancelar_lembrete`
+
+---
+
+## 30. Desligar o computador
+
+A Shaula pode agendar o desligamento do Windows.
+
+Exemplos:
+
+- "Desligue o computador em 60 segundos."
+- "Programe o computador para desligar em 5 minutos."
+
+Ferramenta interna:
+
+`desligar_computador`
+
+Salve arquivos e trabalhos importantes antes de agendar um desligamento.
+
+---
+
+## 31. Cancelar um desligamento
 
 Se um desligamento tiver sido agendado:
 
-* "Cancele o desligamento."
-* "Não desligue o computador."
-* "Cancelar desligamento."
+- "Cancele o desligamento."
+- "Não desligue o computador."
+- "Cancelar desligamento."
 
-A ferramenta utilizada é `cancelar_desligamento`.
+Ferramenta interna:
 
----
-
-# 15. Internet
-
-A Shaula possui um controle separado para permitir ou bloquear pesquisas na internet.
-
-O botão da interface mostra:
-
-**🌐 Internet: OFF**
-
-ou
-
-**🌐 Internet: ON**
+`cancelar_desligamento`
 
 ---
 
-## Ativar a internet
+## 32. Controle de internet da Shaula
 
-Você pode dizer:
+A Shaula possui um estado próprio para permitir ou bloquear pesquisas externas.
 
-* "Ative a internet."
-* "Ligue a internet."
-* "Pode usar a internet."
-* "Permita o acesso à internet."
+Esse estado começa desligado quando o registro de ferramentas é criado.
 
-A ferramenta utilizada é `ativar_internet`.
+Na interface, o botão mostra:
 
----
+`🌐 Internet: OFF`
 
-## Desativar a internet
+ou:
 
-Você pode dizer:
+`🌐 Internet: ON`
 
-* "Desative a internet."
-* "Desligue a internet."
-* "Fique offline."
-* "Não use mais a internet."
-
-A ferramenta utilizada é `desativar_internet`.
+Esse controle não desliga a placa de rede nem desconecta o Windows da internet. Ele controla se a Shaula está autorizada a realizar pesquisas externas.
 
 ---
 
-# 16. Pesquisar na internet
+## 33. Ativar a internet da Shaula
 
-Quando a internet estiver ativada, a Shaula pode realizar pesquisas.
+Exemplos:
 
-### Exemplos
+- "Ative a internet."
+- "Ligue a internet."
+- "Pode usar a internet."
+- "Permita o acesso à internet."
 
-* "Pesquise sobre energia solar."
-* "Qual é a temperatura atual em Brasília?"
-* "Quais são as notícias de hoje?"
-* "Pesquise o preço atual de determinado produto."
-* "Pesquise informações sobre o Windows."
-* "Quais são as fontes dessa informação?"
+Ferramenta interna:
 
-A ferramenta utilizada é `pesquisar_internet`.
+`ativar_internet`
 
-Quando a pesquisa é realizada, a Shaula recebe os resultados e pode utilizá-los para elaborar a resposta.
+Também é possível alternar o estado pelo botão da interface.
 
 ---
 
-# 17. Menu Iniciar
+## 34. Desativar a internet da Shaula
 
-Para abrir diretamente:
+Exemplos:
 
-* "Abra o Menu Iniciar."
-* "Abra o Iniciar."
+- "Desative a internet."
+- "Desligue a internet."
+- "Fique offline."
+- "Não use mais a internet."
 
----
+Ferramenta interna:
 
-# 18. Encerrar a Shaula
+`desativar_internet`
 
-A Shaula também possui o comando de encerramento.
-
-Digite:
-
-**"sair"**
-
-ou uma frase equivalente, como:
-
-* "Pode sair."
-* "Feche a Shaula."
-* "Encerre a Shaula."
-* "Pode fechar."
-
-Ao executar corretamente o encerramento, a Shaula fecha a interface e também encerra o processo do **Ollama**, evitando que o `ollama.exe` continue executando em segundo plano.
+Também é possível alternar o estado pelo botão da interface.
 
 ---
 
-# 19. Exemplos de comandos completos
+## 35. Pesquisar na internet
 
-Você pode combinar comandos de maneira natural.
+Com a internet da Shaula ativada, ela pode pesquisar informações externas.
+
+Exemplos:
+
+- "Pesquise sobre energia solar."
+- "Qual é a temperatura atual em Brasília?"
+- "Quais são as notícias de hoje?"
+- "Pesquise o preço atual de determinado produto."
+- "Pesquise informações sobre o Windows."
+
+Ferramenta interna:
+
+`pesquisar_internet`
+
+A pesquisa usa DuckDuckGo e possui Bing como mecanismo de fallback.
+
+### Pesquisa automática em perguntas factuais
+
+Quando a internet está ligada, a Shaula pode perceber que uma pergunta parece factual e pesquisar antes de chamar o modelo.
+
+Por exemplo:
+
+- "Quem é o atual...?"
+- "Quando aconteceu...?"
+- "Onde fica...?"
+- "Qual é o preço atual...?"
+- perguntas terminadas em `?` que atendam à heurística implementada.
+
+A heurística é simples, então ela pode ocasionalmente pesquisar uma pergunta que não precisava ou deixar passar uma formulação incomum.
+
+### Fontes
+
+Durante uma pesquisa, as URLs encontradas são registradas para a resposta atual. Se a resposta final não contiver nenhuma delas, a Shaula acrescenta uma seção `Fontes:` ao final.
+
+---
+
+## 36. Encerrar a Shaula
+
+A interface reconhece comandos de saída como:
+
+- "sair"
+- "fechar"
+- "encerrar"
+- "Feche a Shaula."
+- "Pode sair."
+
+Ao fechar a interface, a Shaula também tenta encerrar os processos locais do Ollama associados à aplicação.
+
+Você também pode fechar a janela normalmente.
+
+---
+
+## 37. Exemplos de comandos combinados
+
+A Shaula entende linguagem natural, mas a execução efetiva de várias ações numa única frase depende de como o modelo decidir usar as ferramentas.
+
+Exemplos:
 
 ### Exemplo 1
 
-**"Abra o Discord e coloque ele no monitor 2."**
+"Abra o Discord e coloque ele no monitor 2."
 
 ### Exemplo 2
 
-**"Liste meus monitores e depois me diga qual é o principal."**
+"Liste meus monitores e diga qual é o principal."
 
 ### Exemplo 3
 
-**"Procure o arquivo relatório.pdf e abra ele."**
+"Procure o arquivo relatório.pdf e abra ele."
 
 ### Exemplo 4
 
-**"Ative a internet e pesquise a previsão do tempo para amanhã."**
+"Ative a internet e pesquise a previsão do tempo para amanhã."
 
 ### Exemplo 5
 
-**"Faça um ping em 1.1.1.1."**
+"Faça um ping em 1.1.1.1."
 
 ### Exemplo 6
 
-**"Abra o Chrome e mova ele para a outra tela."**
+"Abra o Chrome e mova ele para a outra tela."
+
+### Exemplo 7
+
+"Liste os processos que mais usam memória."
+
+### Exemplo 8
+
+"Crie um lembrete para eu voltar ao trabalho em 15 minutos."
+
+### Exemplo 9
+
+"Tire um print do monitor 2 e copie para a área de transferência."
 
 ---
 
-# 20. Resumo rápido
+## 38. Resumo rápido
 
-| O que você quer       | Exemplo                             |
-| --------------------- | ----------------------------------- |
-| Abrir programa        | "Abra o Discord."                   |
-| Procurar arquivo      | "Procure relatório.pdf."            |
-| Abrir arquivo         | "Abra C:...\arquivo.pdf"            |
-| Listar monitores      | "Liste meus monitores."             |
-| Mover para monitor    | "Mova o Discord para o monitor 2."  |
-| Mover para outra tela | "Mova o Discord para a outra tela." |
-| Abrir Iniciar         | "Abra o Menu Iniciar."              |
-| Ver hardware          | "Mostre as informações do PC."      |
-| Testar conexão        | "Faça um ping."                     |
-| Calcular              | "Calcule 125 × 37."                 |
-| Operar matrizes       | "Calcule o determinante."           |
-| Converter bases       | "Converta FF para decimal."         |
-| Desligar PC           | "Desligue em 60 segundos."          |
-| Cancelar desligamento | "Cancele o desligamento."           |
-| Ativar internet       | "Ative a internet."                 |
-| Desativar internet    | "Desative a internet."              |
-| Pesquisar             | "Pesquise sobre energia solar."     |
-| Fechar Shaula        | "Sair."                             |
+| O que você quer | Exemplo | Ferramenta |
+|---|---|---|
+| Abrir programa | "Abra o Discord." | `abrir_programa` |
+| Fechar programa | "Feche o Spotify." | `fechar_programa` |
+| Procurar arquivo | "Procure relatório.pdf." | `buscar_arquivo` |
+| Abrir arquivo | "Abra C:\\...\\arquivo.pdf" | `abrir_arquivo` |
+| Listar monitores | "Liste meus monitores." | `listar_monitores` |
+| Listar janelas | "Quais janelas estão abertas?" | `listar_janelas_abertas` |
+| Mover para monitor | "Mova o Discord para o monitor 2." | `mover_programa_monitor` |
+| Mover para outra tela | "Mova o Discord para a outra tela." | `mover_para_outro_monitor` |
+| Controlar janela | "Minimize o Chrome." | `controlar_janela` |
+| Abrir Iniciar | "Abra o Menu Iniciar." | `abrir_menu_iniciar` |
+| Tirar print | "Tire um print do monitor 2." | `tirar_print` |
+| Copiar texto | "Copie esta frase." | `copiar_texto` |
+| Ler clipboard | "O que está copiado?" | `colar_texto` |
+| Ver hardware | "Mostre as informações do PC." | `informacoes_hardware` |
+| Bloquear tela | "Bloqueie a tela." | `bloquear_tela` |
+| Testar conexão | "Faça um ping." | `testar_ping` |
+| Ver IP local | "Qual é meu IP local?" | `obter_ip_local` |
+| Ver Wi-Fi | "Em qual Wi-Fi estou?" | `verificar_wifi` |
+| Listar processos | "Quais usam mais CPU?" | `listar_processos` |
+| Ver processos protegidos | "Liste os processos protegidos." | `listar_processos_protegidos` |
+| Finalizar processo | "Finalize notepad.exe." | `finalizar_processo` |
+| Calcular | "Calcule 125 × 37." | `calcular` |
+| Somar matrizes | "Some estas matrizes." | `matriz_soma` |
+| Subtrair matrizes | "Subtraia B de A." | `matriz_subtracao` |
+| Multiplicar matrizes | "Multiplique estas matrizes." | `matriz_multiplicacao` |
+| Escalar matriz | "Multiplique a matriz por 3." | `matriz_escalar` |
+| Transpor matriz | "Calcule a transposta." | `matriz_transposta` |
+| Determinante | "Calcule o determinante." | `matriz_determinante` |
+| Inversa | "Calcule a matriz inversa." | `matriz_inversa` |
+| Potência de matriz | "Eleve a matriz ao quadrado." | `matriz_potencia` |
+| Converter base | "Converta FF para decimal." | `converter_base` |
+| Criar lembrete | "Me lembre em 20 minutos." | `criar_lembrete` |
+| Listar lembretes | "Liste meus lembretes." | `listar_lembretes` |
+| Cancelar lembrete | "Cancele o lembrete 2." | `cancelar_lembrete` |
+| Desligar PC | "Desligue em 60 segundos." | `desligar_computador` |
+| Cancelar desligamento | "Cancele o desligamento." | `cancelar_desligamento` |
+| Ativar pesquisas | "Ative a internet." | `ativar_internet` |
+| Desativar pesquisas | "Desative a internet." | `desativar_internet` |
+| Pesquisar | "Pesquise sobre energia solar." | `pesquisar_internet` |
+| Fechar Shaula | "Sair." | comando local da interface |
 
 ---
 
-## Observação
+## 39. Lista completa das 39 ferramentas da interface gráfica
 
-A Shaula entende comandos em linguagem natural. Portanto, você não precisa decorar uma sintaxe específica.
+### Cálculo — 10
 
-Por exemplo, estas frases podem representar a mesma ação:
+1. `calcular`
+2. `matriz_soma`
+3. `matriz_subtracao`
+4. `matriz_multiplicacao`
+5. `matriz_escalar`
+6. `matriz_transposta`
+7. `matriz_determinante`
+8. `matriz_inversa`
+9. `matriz_potencia`
+10. `converter_base`
 
-* "Mova o Discord para o monitor 2."
-* "Coloque o Discord na segunda tela."
-* "Jogue o Discord para o monitor dois."
+### Sistema, arquivos e interação — 29
 
-O importante é que a intenção esteja clara.
+1. `abrir_programa`
+2. `fechar_programa`
+3. `buscar_arquivo`
+4. `abrir_arquivo`
+5. `desligar_computador`
+6. `cancelar_desligamento`
+7. `bloquear_tela`
+8. `testar_ping`
+9. `informacoes_hardware`
+10. `abrir_menu_iniciar`
+11. `ativar_internet`
+12. `desativar_internet`
+13. `pesquisar_internet`
+14. `listar_monitores`
+15. `listar_janelas_abertas`
+16. `mover_programa_monitor`
+17. `mover_para_outro_monitor`
+18. `tirar_print`
+19. `controlar_janela`
+20. `criar_lembrete`
+21. `listar_lembretes`
+22. `cancelar_lembrete`
+23. `listar_processos`
+24. `listar_processos_protegidos`
+25. `finalizar_processo`
+26. `copiar_texto`
+27. `colar_texto`
+28. `obter_ip_local`
+29. `verificar_wifi`
+
+---
+
+## 40. Onde a Shaula guarda seus dados
+
+A versão gráfica mantém conversas em:
+
+`%USERPROFILE%\.shaula\conversas\`
+
+Dentro dessa pasta existem:
+
+- `indice.json`, com os metadados das conversas;
+- um arquivo `.json` separado para cada conversa.
+
+Cada conversa mantém no máximo as 60 mensagens persistidas mais recentes.
+
+O cache de comandos usa `cache_comandos.json`.
+
+Notificações podem registrar diagnóstico em:
+
+`%USERPROFILE%\.shaula\notificacoes.log`
+
+Capturas de tela salvas em arquivo ficam na pasta `Shaula` dentro da pasta Imagens do Windows.
+
+---
+
+## 41. Limitações importantes da versão 3.50
+
+- O modelo `qwen3.5:9b` pode ficar lento em máquinas sem GPU dedicada adequada.
+- A interface não mostra a resposta palavra por palavra; ela espera a resposta ficar pronta.
+- O status de processamento é genérico.
+- A pesquisa automática usa uma heurística simples.
+- Vídeos são processados por amostragem de até 6 frames, sem áudio.
+- Não há suporte a anexos de áudio.
+- PDFs escaneados usam no máximo 8 páginas renderizadas.
+- Texto de PDF e arquivos de texto pode ser truncado em 12.000 caracteres.
+- Várias ferramentas dependem especificamente do Windows.
+- O conteúdo completo de anexos não é lembrado em mensagens futuras; é usado somente na interação em que foi enviado.
+
+---
+
+## 42. Observações sobre linguagem natural
+
+Você não precisa decorar os nomes internos das ferramentas.
+
+Por exemplo, estas frases podem representar a mesma intenção:
+
+- "Mova o Discord para o monitor 2."
+- "Coloque o Discord na segunda tela."
+- "Jogue o Discord para o monitor dois."
+
+Da mesma forma:
+
+- "Liste meus lembretes."
+- "Que lembretes eu tenho?"
+- "Mostre os lembretes programados."
+
+O importante é deixar a intenção e os dados necessários claros.
+
+Quando houver ambiguidade — por exemplo, várias janelas com nomes parecidos — a Shaula pode precisar de uma indicação mais específica.
+
+---
+
+## 43. Cuidados com comandos que alteram o computador
+
+Algumas ferramentas realizam ações reais no Windows. Antes de usá-las, considere o efeito da ação:
+
+- fechar programas pode descartar trabalho não salvo;
+- finalizar processos pode encerrar aplicativos abruptamente;
+- desligar o computador pode interromper tarefas em andamento;
+- apagar uma conversa pelo menu é definitivo;
+- bloquear a tela interrompe o uso até você desbloquear o Windows.
+
+Quando houver conteúdo importante aberto, salve-o antes de executar ações destrutivas ou de encerramento.
+
+---
+
+## 44. Resumo da versão 3.50
+
+A interface gráfica da Shaula IA 3.50 reúne:
+
+- conversa local com Ollama + `qwen3.5:9b`;
+- 39 ferramentas;
+- múltiplas conversas persistentes;
+- pesquisa opcional na internet com fontes;
+- anexos de imagem, PDF, vídeo e texto/código;
+- controle de programas, janelas e monitores;
+- captura de tela;
+- área de transferência;
+- informações de hardware, rede e processos;
+- cálculos, matrizes e conversão de bases;
+- lembretes e notificações locais;
+- comandos de sistema do Windows.
+
+Este manual corresponde à estrutura auditada da Shaula IA 3.50.
