@@ -1,0 +1,407 @@
+# Manual de Comandos da Shaula
+
+A Shaula é uma assistente pessoal local capaz de controlar algumas funções do computador, trabalhar com arquivos, realizar cálculos, controlar a internet e gerenciar janelas e monitores.
+
+Os comandos podem ser dados em linguagem natural. Não é necessário usar exatamente as frases dos exemplos.
+
+---
+
+## 1. Abrir programas
+
+A Shaula pode localizar e abrir programas instalados no Windows.
+
+### Exemplos
+
+* "Abra o Discord."
+* "Abra o Chrome."
+* "Abra o Steam."
+* "Abra o Bloco de Notas."
+* "Abra o Firefox."
+
+A Shaula utiliza a ferramenta `abrir_programa` para localizar o programa.
+
+---
+
+# 2. Trabalhar com arquivos
+
+A Shaula pode procurar arquivos pelo nome e abrir arquivos encontrados.
+
+## Procurar um arquivo
+
+### Exemplos
+
+* "Procure o arquivo trabalho.docx."
+* "Encontre o relatório.pdf."
+* "Procure minha apresentação."
+* "Encontre o arquivo teste na unidade D."
+
+A ferramenta utilizada é `buscar_arquivo`.
+
+## Abrir um arquivo
+
+Se você tiver o caminho completo:
+
+* "Abra C:\Users\Gabriel\Documents\teste.txt"
+
+A Shaula utiliza `abrir_arquivo`.
+
+---
+
+# 3. Controlar os monitores
+
+A Shaula consegue identificar os monitores conectados ao Windows e mover janelas entre eles.
+
+## Ver os monitores
+
+Use:
+
+* "Liste meus monitores."
+* "Quais monitores estão conectados?"
+* "Quantos monitores eu tenho?"
+
+A Shaula responderá usando a numeração do Windows:
+
+* Monitor 1
+* Monitor 2
+* Monitor 3
+* etc.
+
+---
+
+## 4. Mover um programa para um monitor específico
+
+Você pode dizer:
+
+* "Mova o Discord para o monitor 2."
+* "Coloque o Chrome no monitor 1."
+* "Mova o Firefox para o monitor 2."
+* "Coloque o Steam no monitor 3."
+
+A estrutura básica é:
+
+**"Mova [programa] para o monitor [número]."**
+
+Exemplo:
+
+**"Mova o Discord para o monitor 2."**
+
+A Shaula procura a janela correspondente e a move para o monitor solicitado.
+
+---
+
+# 5. Mover um programa para outra tela
+
+Quando você não quiser especificar o número do monitor:
+
+* "Mova o Discord para a outra tela."
+* "Coloque o Chrome no outro monitor."
+* "Mova o Firefox para o outro monitor."
+
+A Shaula identifica o monitor em que o programa está e tenta colocá-lo em outro monitor disponível.
+
+---
+
+## 6. Quando existem várias janelas do mesmo programa
+
+Se houver várias janelas correspondentes, a Shaula não deve escolher aleatoriamente.
+
+Por exemplo:
+
+**"Mova o Chrome para o monitor 2."**
+
+Se existirem várias janelas do Chrome, a Shaula poderá informar quais encontrou e pedir que você indique qual deseja mover.
+
+---
+
+# 7. Abrir o Menu Iniciar
+
+Você pode dizer:
+
+* "Abra o Menu Iniciar."
+* "Abra o Iniciar."
+* "Abra o menu do Windows."
+
+A Shaula utiliza a ferramenta `abrir_menu_iniciar`.
+
+---
+
+# 8. Informações do computador
+
+A Shaula pode consultar informações do hardware e do sistema.
+
+### Exemplos
+
+* "Quais são as informações do meu computador?"
+* "Mostre as informações do hardware."
+* "Quais são as especificações do meu PC?"
+* "Me mostre o hardware."
+
+A ferramenta utilizada é `informacoes_hardware`.
+
+---
+
+# 9. Testar a conexão
+
+A Shaula possui uma ferramenta de ping.
+
+### Exemplos
+
+* "Teste minha conexão."
+* "Faça um ping."
+* "Teste o ping do Google."
+* "Faça ping em 1.1.1.1."
+
+A ferramenta utilizada é `testar_ping`.
+
+---
+
+# 10. Cálculos
+
+A Shaula pode realizar cálculos matemáticos.
+
+### Exemplos
+
+* "Calcule 125 vezes 37."
+* "Quanto é 500 dividido por 8?"
+* "Calcule 2 elevado a 10."
+* "Resolva 45 + 78 - 12."
+
+Para cálculos comuns, a ferramenta utilizada é `calcular`.
+
+---
+
+# 11. Matrizes
+
+A Shaula possui ferramentas específicas para operações matriciais.
+
+Ela pode realizar:
+
+* Soma de matrizes
+* Subtração de matrizes
+* Multiplicação de matrizes
+* Multiplicação por escalar
+* Transposta
+* Determinante
+* Matriz inversa
+* Potência de matriz
+
+### Exemplos
+
+**Soma:**
+
+"Some estas duas matrizes."
+
+**Subtração:**
+
+"Subtraia a matriz B da matriz A."
+
+**Multiplicação:**
+
+"Multiplique estas duas matrizes."
+
+**Determinante:**
+
+"Calcule o determinante dessa matriz."
+
+**Inversa:**
+
+"Calcule a inversa dessa matriz."
+
+**Transposta:**
+
+"Calcule a transposta."
+
+---
+
+# 12. Conversão de bases numéricas
+
+A Shaula também pode converter números entre bases.
+
+### Exemplos
+
+* "Converta 101101 de binário para decimal."
+* "Converta 255 de decimal para hexadecimal."
+* "Converta FF de hexadecimal para decimal."
+
+A ferramenta utilizada é `converter_base`.
+
+---
+
+# 13. Desligar o computador
+
+A Shaula pode agendar o desligamento do computador.
+
+### Exemplos
+
+* "Desligue o computador em 60 segundos."
+* "Programe o computador para desligar em 5 minutos."
+
+A ferramenta utilizada é `desligar_computador`.
+
+---
+
+# 14. Cancelar um desligamento
+
+Se um desligamento tiver sido agendado:
+
+* "Cancele o desligamento."
+* "Não desligue o computador."
+* "Cancelar desligamento."
+
+A ferramenta utilizada é `cancelar_desligamento`.
+
+---
+
+# 15. Internet
+
+A Shaula possui um controle separado para permitir ou bloquear pesquisas na internet.
+
+O botão da interface mostra:
+
+**🌐 Internet: OFF**
+
+ou
+
+**🌐 Internet: ON**
+
+---
+
+## Ativar a internet
+
+Você pode dizer:
+
+* "Ative a internet."
+* "Ligue a internet."
+* "Pode usar a internet."
+* "Permita o acesso à internet."
+
+A ferramenta utilizada é `ativar_internet`.
+
+---
+
+## Desativar a internet
+
+Você pode dizer:
+
+* "Desative a internet."
+* "Desligue a internet."
+* "Fique offline."
+* "Não use mais a internet."
+
+A ferramenta utilizada é `desativar_internet`.
+
+---
+
+# 16. Pesquisar na internet
+
+Quando a internet estiver ativada, a Shaula pode realizar pesquisas.
+
+### Exemplos
+
+* "Pesquise sobre energia solar."
+* "Qual é a temperatura atual em Brasília?"
+* "Quais são as notícias de hoje?"
+* "Pesquise o preço atual de determinado produto."
+* "Pesquise informações sobre o Windows."
+* "Quais são as fontes dessa informação?"
+
+A ferramenta utilizada é `pesquisar_internet`.
+
+Quando a pesquisa é realizada, a Shaula recebe os resultados e pode utilizá-los para elaborar a resposta.
+
+---
+
+# 17. Menu Iniciar
+
+Para abrir diretamente:
+
+* "Abra o Menu Iniciar."
+* "Abra o Iniciar."
+
+---
+
+# 18. Encerrar a Shaula
+
+A Shaula também possui o comando de encerramento.
+
+Digite:
+
+**"sair"**
+
+ou uma frase equivalente, como:
+
+* "Pode sair."
+* "Feche a Shaula."
+* "Encerre a Shaula."
+* "Pode fechar."
+
+Ao executar corretamente o encerramento, a Shaula fecha a interface e também encerra o processo do **Ollama**, evitando que o `ollama.exe` continue executando em segundo plano.
+
+---
+
+# 19. Exemplos de comandos completos
+
+Você pode combinar comandos de maneira natural.
+
+### Exemplo 1
+
+**"Abra o Discord e coloque ele no monitor 2."**
+
+### Exemplo 2
+
+**"Liste meus monitores e depois me diga qual é o principal."**
+
+### Exemplo 3
+
+**"Procure o arquivo relatório.pdf e abra ele."**
+
+### Exemplo 4
+
+**"Ative a internet e pesquise a previsão do tempo para amanhã."**
+
+### Exemplo 5
+
+**"Faça um ping em 1.1.1.1."**
+
+### Exemplo 6
+
+**"Abra o Chrome e mova ele para a outra tela."**
+
+---
+
+# 20. Resumo rápido
+
+| O que você quer       | Exemplo                             |
+| --------------------- | ----------------------------------- |
+| Abrir programa        | "Abra o Discord."                   |
+| Procurar arquivo      | "Procure relatório.pdf."            |
+| Abrir arquivo         | "Abra C:...\arquivo.pdf"            |
+| Listar monitores      | "Liste meus monitores."             |
+| Mover para monitor    | "Mova o Discord para o monitor 2."  |
+| Mover para outra tela | "Mova o Discord para a outra tela." |
+| Abrir Iniciar         | "Abra o Menu Iniciar."              |
+| Ver hardware          | "Mostre as informações do PC."      |
+| Testar conexão        | "Faça um ping."                     |
+| Calcular              | "Calcule 125 × 37."                 |
+| Operar matrizes       | "Calcule o determinante."           |
+| Converter bases       | "Converta FF para decimal."         |
+| Desligar PC           | "Desligue em 60 segundos."          |
+| Cancelar desligamento | "Cancele o desligamento."           |
+| Ativar internet       | "Ative a internet."                 |
+| Desativar internet    | "Desative a internet."              |
+| Pesquisar             | "Pesquise sobre energia solar."     |
+| Fechar Shaula        | "Sair."                             |
+
+---
+
+## Observação
+
+A Shaula entende comandos em linguagem natural. Portanto, você não precisa decorar uma sintaxe específica.
+
+Por exemplo, estas frases podem representar a mesma ação:
+
+* "Mova o Discord para o monitor 2."
+* "Coloque o Discord na segunda tela."
+* "Jogue o Discord para o monitor dois."
+
+O importante é que a intenção esteja clara.
