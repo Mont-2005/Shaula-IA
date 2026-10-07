@@ -39,8 +39,6 @@ O pacote contém `Instalador Dependências Shaula.bat`. Esse instalador prepara 
 - Ollama para Windows;
 - modelo `qwen3.5:9b`.
 
-> O nome `instalar_shaula_corrigido_final_v2.bat`, citado na documentação anterior, **não existe no pacote 3.50 auditado**.
-
 ---
 
 ## Estrutura de arquivos observada no pacote
@@ -508,9 +506,7 @@ A execução ponta a ponta dos testes não foi concluída no ambiente desta audi
 ## Limitações conhecidas
 
 - Desempenho do `qwen3.5:9b` pode ser muito baixo sem GPU dedicada suficiente.
-- A heurística de `DetectorPerguntaFactual` é deliberadamente simples e pode pesquisar demais ou deixar passar formulações incomuns.
-- A interface usa `chat()` sem streaming; a resposta aparece depois de pronta.
-- O status durante uma inferência é genérico (`Shaula está pensando...`).
+- A heurística de `DetectorPerguntaFactual` é propositalmente simples e pode pesquisar demais ou deixar passar formulações incomuns.
 - Vídeos são representados por no máximo 6 frames e não incluem áudio.
 - Não existe estratégia de anexo de áudio.
 - PDFs escaneados são limitados a 8 páginas renderizadas por anexo.
@@ -525,9 +521,8 @@ A execução ponta a ponta dos testes não foi concluída no ambiente desta audi
 Estas não são apenas erros de documentação; são diferenças presentes no próprio pacote auditado:
 
 1. **`tools/conftest.py`** — pela finalidade, deveria estar em `tests/conftest.py`.
-2. **Banner do CLI** — `main.py` ainda imprime `Shaula v1.80`.
-3. **Capitalização da pasta de cache** — `CacheComandos` usa `.Shaula`; conversas, memória e notificações usam `.shaula`.
-4. **`pytest` ausente do instalador** — a suíte existe, mas o instalador não instala explicitamente o runner de testes.
+2. **Capitalização da pasta de cache** — `CacheComandos` usa `.Shaula`; conversas, memória e notificações usam `.shaula`.
+3. **`pytest` ausente do instalador** — a suíte existe, mas o instalador não instala explicitamente o runner de testes.
 
 Esses quatro pontos devem ser corrigidos no código/empacotamento se a intenção for deixar a 3.50 completamente consistente.
 
