@@ -319,7 +319,7 @@ pela ferramenta.
 # ============================================================
 
 print("=" * 50)
-print("                 Shaula v1.80")
+print("                 Shaula v3.50")
 print("=" * 50)
 print("Digite 'sair' para encerrar.\n")
 
