@@ -46,7 +46,7 @@ O pacote contém `Instalador Dependências Shaula.bat`. Esse instalador prepara 
 ## Estrutura de arquivos observada no pacote
 
 ```text
-Shaula IA 3.50 docu/
+Shaula IA 3.50 Documentação/
 │
 ├── interface.py
 ├── main.py
