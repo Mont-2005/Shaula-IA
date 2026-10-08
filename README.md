@@ -2,7 +2,7 @@
 
 Shaula é uma IA local feita para rodar no Windows, usando **Ollama** com o modelo `qwen3.5:9b` para conversa, raciocínio e tool-calling. A aplicação principal possui interface gráfica em PySide6 (`interface.py`) e existe também um modo de linha de comando independente (`main.py`).
 
-Este README foi feito utilizando a estrutura e o código-fonte presentes no pacote **Shaula IA 3.50**. O objetivo é documentar o que a versão atual contém.
+O README foi feito com o código atual, utilizando a estrutura e o código-fonte presentes no pacote **Shaula IA 3.50**. O objetivo é documentar o que a versão atual contém.
 
 > **Arquitetura da 3.50:** o núcleo foi organizado em classes. O despacho de ferramentas é feito por `RegistroFerramentas`, a lógica de cada domínio vive em classes de serviço, a pesquisa e os anexos usam Strategy, e a interface gerencia múltiplas conversas persistentes por meio de `GerenciadorConversas` + `HistoricoConversa`.
 
@@ -10,7 +10,7 @@ Este README foi feito utilizando a estrutura e o código-fonte presentes no paco
 
 ## Como rodar
 
-A forma normal de iniciar é dar duplo clique em `Shaula.bat`.
+A forma normal de iniciar é dar dois cliques em `Shaula.bat`.
 
 O launcher:
 
