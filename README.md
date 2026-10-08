@@ -14,13 +14,13 @@ A forma normal de iniciar é dar duplo clique em `Shaula.bat`.
 
 O launcher:
 
-1. muda o diretório de trabalho para a pasta da própria Shaula;
-2. verifica se o Ollama responde em `http://127.0.0.1:11434/api/tags`;
-3. se necessário, procura `ollama.exe` no PATH ou em `%LOCALAPPDATA%\Programs\Ollama`;
-4. inicia `ollama serve` em segundo plano;
-5. espera até 20 tentativas, com intervalo de aproximadamente 1 segundo, até o servidor responder;
-6. verifica se `.venv\Scripts\python.exe` existe;
-7. executa `.venv\Scripts\python.exe interface.py`.
+1. Muda o diretório de trabalho para a pasta da própria Shaula;
+2. Verifica se o Ollama responde em `http://127.0.0.1:11434/api/tags`;
+3. Se necessário, procura `ollama.exe` no PATH ou em `%LOCALAPPDATA%\Programs\Ollama`;
+4. Inicia `ollama serve` em segundo plano;
+5. Espera até 20 tentativas, com intervalo de aproximadamente 1 segundo, até o servidor responder;
+6. Verifica se `.venv\Scripts\python.exe` existe;
+7. Executa `.venv\Scripts\python.exe interface.py`.
 
 Se o Ollama não responder dentro do limite, o launcher encerra com erro. `interface.py` captura erros de comunicação com o Ollama, mas **não implementa um mecanismo próprio de várias tentativas de reconexão** para a mesma chamada.
 
@@ -86,20 +86,6 @@ Shaula IA 3.50 Documentação/
     ├── registro.py
     └── sistema.py
 ```
-
-### Observação sobre `conftest.py`
-
-No pacote auditado, `conftest.py` está em `tools/conftest.py`. Pelo conteúdo do arquivo, ele foi escrito para fornecer uma `QGuiApplication` automática à suíte `tests/test_anexos.py`; portanto, a posição coerente com essa intenção é:
-
-```text
-tests/
-├── conftest.py
-└── test_anexos.py
-```
-
-Enquanto o arquivo permanecer em `tools/`, a documentação deve registrar a localização real. Para que o fixture automático seja aplicado naturalmente aos testes em `tests/`, recomenda-se mover o arquivo para `tests/conftest.py`.
-
----
 
 ## Visão geral da arquitetura
 
@@ -245,9 +231,9 @@ Ele restringe o registro a 13 ferramentas:
 
 ---
 
-## Pesquisa na internet — Strategy
+## Pesquisa na internet — Padrão Strategy
 
-O estado de autorização fica em `EstadoInternet`, que começa desligado.
+A autorização para acessar a internet fica em `EstadoInternet`, que começa desligado.
 
 `PesquisaInternet` recebe esse objeto e uma lista de mecanismos. Por padrão:
 
