@@ -205,7 +205,52 @@ Escreva a frase sozinha, sem pontuação no fim e sem outras palavras (aqui a ex
 
 ---
 
-## 4. Anexar arquivos
+## 4. Menu principal
+
+A barra de menus, no topo da janela, dá acesso a todas as funcionalidades da Shaula sem que você precise digitar comandos. Tudo o que o menu faz também pode ser pedido por escrito ou por voz.
+
+### Menus disponíveis
+
+- `Arquivo`: nova conversa (`Ctrl+N`), abrir a conversa atual em nova janela, anexar arquivo (`Ctrl+O`) e sair da Shaula (`Ctrl+Q`).
+- `Conversas`: ir para uma das conversas salvas (a atual aparece marcada e as fixadas têm 📌), renomear, fixar ou desafixar, apagar e mostrar ou ocultar a barra lateral (`Ctrl+B`).
+- `Programas e arquivos`: abrir programa, fechar programa, abrir o menu Iniciar, buscar arquivo e abrir arquivo.
+- `Calculadora`: calcular uma expressão, converter entre bases e, no submenu `Matrizes`, soma, subtração, multiplicação, multiplicação por escalar, transposta, determinante, inversa e potência.
+- `Lembretes`: criar, listar e cancelar lembretes.
+- `Janelas e telas`: listar monitores, listar janelas abertas, controlar janela, mover programa para um monitor ou para outro monitor, tirar print e analisar a tela.
+- `Sistema`: informações do hardware, listar processos (comuns e protegidos), finalizar processo, bloquear a tela, desligar o computador, cancelar o desligamento, copiar texto e colar da área de transferência.
+- `Rede e internet`: a chave `Internet ligada`, pesquisar na internet, ver o IP local, verificar o Wi-Fi e testar ping.
+- `Configurações`: nível de esforço (o atual aparece marcado) e `Falar um comando` (`Ctrl+M`).
+- `Ajuda`: a lista das ferramentas disponíveis e `Sobre a Shaula`.
+
+### Como usar um item do menu
+
+1. Clique no menu e escolha o item.
+2. Os itens com `…` no fim pedem dados num formulário. Preencha e clique em `Executar` (ou em `Cancelar` para desistir). Campos marcados como `(opcional)` podem ficar em branco, e a Shaula usa o valor padrão.
+3. O pedido aparece na conversa como `[Menu] Nome do item`, e o resultado vem logo abaixo.
+
+Por exemplo, em `Calculadora > Matrizes > Determinante...`, digite a matriz com uma linha por linha e os valores separados por espaço:
+
+```
+2 1
+3 4
+```
+
+Também é aceito o formato `[[2, 1], [3, 4]]`. O resultado é 5.
+
+Em `Lembretes > Criar lembrete...`, preencha o texto e o tempo em minutos (aceita vírgula, como em `2,5`).
+
+### O que muda em relação a digitar o pedido
+
+- Os itens do menu executam a ferramenta direto, sem passar pelo modelo. Por isso a resposta é imediata e não depende do nível de esforço.
+- As confirmações continuam valendo: desligar o computador, finalizar processo, fechar programa e fechar janela pedem autorização, como sempre.
+- `Pesquisar na internet` e `Analisar a tela` dependem do modelo. Eles escrevem a frase na conversa por você ("Pesquise na internet: ..." ou "O que tem na minha tela?") e seguem o fluxo normal. Não funcionam com anexos pendentes: remova os anexos antes.
+- `Internet ligada` é a mesma chave do botão `Internet` da barra superior, e os dois ficam sempre iguais.
+- Enquanto a Shaula responde, executa outro item ou grava a sua voz, os itens que executam ferramentas avisam que é preciso esperar.
+- Uma ferramenta iniciada pelo menu não pode ser interrompida. Quando terminar, o resultado aparece na conversa.
+
+---
+
+## 5. Anexar arquivos
 
 A Shaula aceita anexos na interface gráfica.
 
@@ -323,7 +368,7 @@ Ao reabrir uma conversa antiga, os cartões continuam lá (sem a miniatura das f
 
 ---
 
-## 5. Abrir programas
+## 6. Abrir programas
 
 A Shaula pode localizar e abrir programas instalados no Windows.
 
@@ -345,7 +390,7 @@ Abrir pelo nome ("Abra o Chrome.") não pergunta nada. Mas se o que for aberto f
 
 ---
 
-## 6. Fechar programas
+## 7. Fechar programas
 
 A Shaula pode fechar um programa pelo nome.
 
@@ -363,7 +408,7 @@ A ferramenta pode fechar todas as janelas/processos associados ao nome informado
 
 ---
 
-## 7. Trabalhar com arquivos
+## 8. Trabalhar com arquivos
 
 ### Procurar um arquivo
 
@@ -392,7 +437,7 @@ Ferramenta interna:
 
 ---
 
-## 8. Listar monitores
+## 9. Listar monitores
 
 A Shaula pode identificar os monitores conectados ao Windows.
 
@@ -409,7 +454,7 @@ Ferramenta interna:
 
 ---
 
-## 9. Listar janelas abertas
+## 10. Listar janelas abertas
 
 A Shaula pode listar os títulos das janelas abertas no momento.
 
@@ -427,7 +472,7 @@ Esse recurso é útil quando existem várias janelas parecidas e você quer sabe
 
 ---
 
-## 10. Mover uma janela para um monitor específico
+## 11. Mover uma janela para um monitor específico
 
 Exemplos:
 
@@ -448,7 +493,7 @@ Se houver várias janelas correspondentes, a Shaula informa as encontradas em ve
 
 ---
 
-## 11. Mover uma janela para outro monitor
+## 12. Mover uma janela para outro monitor
 
 Quando você não quiser informar o número do monitor:
 
@@ -464,7 +509,7 @@ A Shaula tenta identificar o monitor atual da janela e escolher outro monitor di
 
 ---
 
-## 12. Controlar uma janela
+## 13. Controlar uma janela
 
 A Shaula pode controlar uma janela aberta pelo nome ou por parte do título.
 
@@ -490,7 +535,7 @@ Ferramenta interna:
 
 ---
 
-## 13. Abrir o Menu Iniciar
+## 14. Abrir o Menu Iniciar
 
 Exemplos:
 
@@ -504,7 +549,7 @@ Ferramenta interna:
 
 ---
 
-## 14. Tirar captura de tela
+## 15. Tirar captura de tela
 
 A Shaula pode tirar screenshots do monitor principal, de um monitor específico ou de todos os monitores.
 
@@ -573,7 +618,7 @@ Pontos importantes:
 
 ---
 
-## 15. Área de transferência
+## 16. Área de transferência
 
 ### Copiar texto
 
@@ -602,7 +647,7 @@ Essa ferramenta lê texto da área de transferência; ela não simula automatica
 
 ---
 
-## 16. Informações do computador
+## 17. Informações do computador
 
 A Shaula pode consultar informações do hardware e do sistema.
 
@@ -619,7 +664,7 @@ Ferramenta interna:
 
 ---
 
-## 17. Bloquear a tela
+## 18. Bloquear a tela
 
 A Shaula pode bloquear a sessão do Windows, equivalente a usar `Win + L`.
 
@@ -637,7 +682,7 @@ O atraso pode ser omitido para bloquear imediatamente. O atraso máximo é de 60
 
 ---
 
-## 18. Testar a conexão com ping
+## 19. Testar a conexão com ping
 
 Exemplos:
 
@@ -654,7 +699,7 @@ Se nenhum host for informado, a ferramenta usa `google.com`. O host precisa ser 
 
 ---
 
-## 19. Ver o IP local
+## 20. Ver o IP local
 
 A Shaula pode mostrar os endereços IP locais das interfaces de rede ativas.
 
@@ -672,7 +717,7 @@ Esse recurso informa IP local da rede, não necessariamente o IP público da con
 
 ---
 
-## 20. Verificar o Wi-Fi
+## 21. Verificar o Wi-Fi
 
 A Shaula pode consultar a conexão Wi-Fi do Windows e informar a rede conectada e a força do sinal quando esses dados estiverem disponíveis.
 
@@ -688,7 +733,7 @@ Ferramenta interna:
 
 ---
 
-## 21. Listar processos
+## 22. Listar processos
 
 A Shaula pode mostrar os processos que mais consomem CPU ou memória.
 
@@ -706,7 +751,7 @@ O padrão é mostrar até 10 processos ordenados por CPU, a menos que você peç
 
 ---
 
-## 22. Processos protegidos
+## 23. Processos protegidos
 
 A Shaula mantém uma lista de processos que não devem ser finalizados pela ferramenta de encerramento.
 
@@ -721,7 +766,7 @@ Ferramenta interna:
 
 ---
 
-## 23. Finalizar um processo
+## 24. Finalizar um processo
 
 A Shaula pode tentar finalizar um processo por nome ou PID.
 
@@ -742,7 +787,7 @@ Use esse recurso com cuidado: finalizar um processo pode fechar um programa sem 
 
 ---
 
-## 24. Cálculos comuns
+## 25. Cálculos comuns
 
 A Shaula pode realizar cálculos matemáticos.
 
@@ -761,7 +806,7 @@ Cálculos que gerariam números gigantes (como `7 elevado a 100000000` ou o fato
 
 ---
 
-## 25. Matrizes
+## 26. Matrizes
 
 A Shaula possui ferramentas específicas para operações matriciais.
 
@@ -800,7 +845,7 @@ Exemplos:
 
 ---
 
-## 26. Conversão de bases numéricas
+## 27. Conversão de bases numéricas
 
 A Shaula pode converter números entre bases.
 
@@ -816,7 +861,7 @@ Ferramenta interna:
 
 ---
 
-## 27. Criar lembretes
+## 28. Criar lembretes
 
 A Shaula pode criar lembretes locais com temporizador.
 
@@ -849,7 +894,7 @@ Quando o tempo termina, a Shaula tenta exibir uma notificação local no Windows
 
 ---
 
-## 28. Listar lembretes
+## 29. Listar lembretes
 
 Para ver os lembretes que ainda não dispararam:
 
@@ -864,7 +909,7 @@ A lista informa os números usados para cancelamento.
 
 ---
 
-## 29. Cancelar um lembrete
+## 30. Cancelar um lembrete
 
 Primeiro liste os lembretes para descobrir o número correspondente.
 
@@ -879,7 +924,7 @@ Ferramenta interna:
 
 ---
 
-## 30. Desligar o computador
+## 31. Desligar o computador
 
 A Shaula pode agendar o desligamento do Windows.
 
@@ -900,7 +945,7 @@ Salve arquivos e trabalhos importantes antes de agendar um desligamento.
 
 ---
 
-## 31. Cancelar um desligamento
+## 32. Cancelar um desligamento
 
 Se um desligamento tiver sido agendado:
 
@@ -914,7 +959,7 @@ Ferramenta interna:
 
 ---
 
-## 32. Controle de internet da Shaula
+## 33. Controle de internet da Shaula
 
 A Shaula possui um estado próprio para permitir ou bloquear pesquisas externas.
 
@@ -932,7 +977,7 @@ Esse controle não desliga a placa de rede nem desconecta o Windows da internet.
 
 ---
 
-## 33. Ativar a internet da Shaula
+## 34. Ativar a internet da Shaula
 
 Exemplos:
 
@@ -949,7 +994,7 @@ Também é possível alternar o estado pelo botão da interface.
 
 ---
 
-## 34. Desativar a internet da Shaula
+## 35. Desativar a internet da Shaula
 
 Exemplos:
 
@@ -966,7 +1011,7 @@ Também é possível alternar o estado pelo botão da interface.
 
 ---
 
-## 35. Pesquisar na internet
+## 36. Pesquisar na internet
 
 Com a internet da Shaula ativada, ela pode pesquisar informações externas.
 
@@ -1008,7 +1053,7 @@ Durante uma pesquisa, as URLs encontradas são registradas para a resposta atual
 
 ---
 
-## 36. Encerrar a Shaula
+## 37. Encerrar a Shaula
 
 A interface reconhece estas frases como comando de saída:
 
@@ -1033,7 +1078,7 @@ Você também pode fechar a janela normalmente. Nesse caso, o Ollama só é ence
 
 ---
 
-## 37. Exemplos de comandos combinados
+## 38. Exemplos de comandos combinados
 
 A Shaula entende linguagem natural, mas a execução efetiva de várias ações numa única frase depende de como o modelo decidir usar as ferramentas.
 
@@ -1077,7 +1122,7 @@ Exemplos:
 
 ---
 
-## 38. Resumo rápido
+## 39. Resumo rápido
 
 | O que você quer | Exemplo | Ferramenta |
 |---|---|---|
@@ -1124,7 +1169,7 @@ Exemplos:
 
 ---
 
-## 39. Lista completa das 40 ferramentas da interface gráfica
+## 40. Lista completa das 40 ferramentas da interface gráfica
 
 ### Cálculo — 10
 
@@ -1174,18 +1219,17 @@ Exemplos:
 
 ---
 
-## 40. Onde a Shaula guarda seus dados
+## 41. Onde a Shaula guarda seus dados
 
 A versão gráfica mantém conversas em:
 
 `%USERPROFILE%\.shaula\conversas\`
 
-Dentro dessa pasta existem:
+Dentro dessa pasta existe o arquivo `shaula.db`, um banco de dados SQLite que guarda a lista de conversas (título, fixada, datas) e as mensagens de cada uma. Enquanto a Shaula está aberta, também aparecem ao lado dele os arquivos `shaula.db-wal` e `shaula.db-shm`, que fazem parte do banco e não devem ser apagados.
 
-- `indice.json`, com os metadados das conversas;
-- um arquivo `.json` separado para cada conversa.
+Conversas guardadas em arquivos JSON por versões anteriores (até a 4.73.2) não são lidas nem migradas automaticamente.
 
-Cada conversa mantém no máximo as 60 mensagens persistidas mais recentes. Só mensagens suas e da Shaula são guardadas (não os resultados internos das ferramentas nem os avisos de erro). Os arquivos são gravados de forma segura, para que um fechamento inesperado não corrompa o histórico.
+Cada conversa mantém no máximo as 60 mensagens persistidas mais recentes. Só mensagens suas e da Shaula são guardadas (não os resultados internos das ferramentas nem os avisos de erro). As gravações são feitas em transações, para que um fechamento inesperado não corrompa o histórico.
 
 O cache de comandos usa `%USERPROFILE%\.shaula\cache_comandos.json`.
 
@@ -1197,13 +1241,14 @@ Capturas de tela salvas em arquivo ficam na pasta `Shaula` dentro da pasta Image
 
 ---
 
-## 41. Limitações importantes da versão 4.70
+## 42. Limitações importantes da versão 4.70
 
 - O modelo `qwen3.5:9b` pode ficar lento em máquinas sem GPU dedicada adequada.
 - A interface não mostra a resposta palavra por palavra; ela espera a resposta ficar pronta.
 - O status de processamento é genérico.
 - Voz: o reconhecimento depende da qualidade do microfone e do ambiente; a transcrição só começa quando você para de falar e leva alguns segundos; não há palavra de ativação ("Shaula, ...") nem resposta falada.
 - Interromper a resposta não desfaz o que uma ferramenta já executou.
+- Os itens do menu principal que executam ferramentas não podem ser interrompidos e, enquanto rodam, a Shaula não aceita novas mensagens nem troca de conversa.
 - A pesquisa automática usa uma heurística simples.
 - Vídeos são processados por amostragem de até 4 frames, sem áudio.
 - Não há suporte a anexos de áudio.
@@ -1219,7 +1264,7 @@ Capturas de tela salvas em arquivo ficam na pasta `Shaula` dentro da pasta Image
 
 ---
 
-## 42. Observações sobre linguagem natural
+## 43. Observações sobre linguagem natural
 
 Você não precisa decorar os nomes internos das ferramentas.
 
@@ -1241,7 +1286,7 @@ Quando houver ambiguidade — por exemplo, várias janelas com nomes parecidos �
 
 ---
 
-## 43. Cuidados com comandos que alteram o computador
+## 44. Cuidados com comandos que alteram o computador
 
 Algumas ferramentas realizam ações reais no Windows. Antes de usá-las, considere o efeito da ação:
 
@@ -1255,12 +1300,13 @@ Quando houver conteúdo importante aberto, salve-o antes de executar ações des
 
 ---
 
-## 44. Resumo da versão 4.70
+## 45. Resumo da versão 4.70
 
 A interface gráfica da Shaula IA 4.70 reúne:
 
 - conversa local com Ollama + `qwen3.5:9b`;
 - 40 ferramentas;
+- barra de menus com acesso a todas as funcionalidades (seção 4);
 - múltiplas conversas persistentes;
 - pesquisa opcional na internet com fontes;
 - anexos de imagem, PDF, vídeo e texto/código;
