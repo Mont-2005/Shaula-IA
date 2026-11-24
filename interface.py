@@ -55,7 +55,14 @@ from tools.confirmacao_qt import ConfirmadorQt
 from tools.intencao_desligar import DetectorDesligar
 from tools.nota_anexo import NotaAnexo
 from tools.comandos_locais import ComandosLocais
-from tools.cartao_anexo import CartaoAnexo, IconeArquivo
+from tools.cartao_anexo import (
+    CartaoAnexo,
+    IconeArquivo,
+    MiniaturaClicavel,
+)
+from tools.acao_sem_ferramenta import DetectorAcaoSemFerramenta
+from tools.area_transferencia import InterpretadorAreaTransferencia
+from tools.visualizador_imagem import VisualizadorImagem
 from tools.esforco import CatalogoEsforco, EstadoEsforco
 from tools.menu_principal import MenuPrincipal
 
@@ -307,7 +314,8 @@ class TrabalhadorIA(QThread):
         registro,
         anexos=None,
         perfil=None,
-        detector_desligar=None
+        detector_desligar=None,
+        detector_acao=None
     ):
 
         super().__init__()
@@ -319,6 +327,12 @@ class TrabalhadorIA(QThread):
         # tools/intencao_desligar.py). Injetável, como o confirmador.
         self.detector_desligar = (
             detector_desligar or DetectorDesligar()
+        )
+
+        # Reconhece resposta que afirma uma ação sem que nenhuma
+        # ferramenta tenha rodado (ver tools/acao_sem_ferramenta.py).
+        self.detector_acao = (
+            detector_acao or DetectorAcaoSemFerramenta()
         )
 
         # Nível de esforço desta mensagem. É uma "foto" do perfil
@@ -664,6 +678,13 @@ class TrabalhadorIA(QThread):
                 schemas
             )
 
+            # Alguma ferramenta já rodou nesta troca? E já pedimos ao
+            # modelo para refazer uma resposta que afirmava uma ação
+            # sem ferramenta? (uma vez só, para não entrar em laço)
+            chamou_ferramenta = False
+
+            correcao_pedida = False
+
             for _rodada in range(self.perfil.max_rodadas):
 
                 self._conferir_interrupcao()
@@ -717,6 +738,41 @@ class TrabalhadorIA(QThread):
 
                         break
 
+                    # GARANTIA DE AÇÃO
+                    #
+                    # "Firefox movido para o monitor 1." escrito pelo
+                    # modelo, sem ferramenta nenhuma, é só texto: a
+                    # janela não se mexeu. Descartamos essa resposta e
+                    # mandamos o modelo refazer, agora chamando a
+                    # ferramenta. Se ele insistir, a resposta sai com
+                    # um aviso em vez de fingir que deu certo.
+                    if (
+                        schemas
+                        and not chamou_ferramenta
+                        and self.detector_acao.afirma_acao(
+                            conteudo_final
+                        )
+                    ):
+
+                        if not correcao_pedida:
+
+                            correcao_pedida = True
+
+                            mensagens_execucao.pop()
+
+                            mensagens_execucao.append(
+                                self.detector_acao
+                                .mensagem_de_correcao()
+                            )
+
+                            continue
+
+                        conteudo_final = (
+                            self.detector_acao.com_aviso(
+                                conteudo_final
+                            )
+                        )
+
                     # GARANTIA DE FONTES
                     #
                     # Em vez de confiar só na instrução do
@@ -762,6 +818,8 @@ class TrabalhadorIA(QThread):
                     # pedido de parar não pode virar "Erro ao
                     # executar a ferramenta".
                     self._conferir_interrupcao()
+
+                    chamou_ferramenta = True
 
                     nome = (
                         chamada.function.name
@@ -1169,9 +1227,16 @@ class CampoMensagem(QTextEdit):
     # daqui: este widget só sabe que "arquivos foram soltos".
     arquivos_soltos = Signal(list)
 
+    # Emitido no Ctrl+V (ou "Colar" do menu de contexto) quando a
+    # área de transferência tem uma imagem — um QImage. Como nos
+    # arquivos soltos, quem anexa de fato é a ShaulaWindow.
+    imagem_colada = Signal(object)
+
     def __init__(self):
 
         super().__init__()
+
+        self.interpretador_colagem = InterpretadorAreaTransferencia()
 
         self.setAcceptRichText(
             False
@@ -1227,6 +1292,59 @@ class CampoMensagem(QTextEdit):
 
         super().dropEvent(
             event
+        )
+
+    def canInsertFromMimeData(
+        self,
+        source
+    ):
+        """
+        Sem isto o QTextEdit acharia que uma área de transferência só
+        com imagem (um print) não tem nada para colar.
+        """
+
+        if not self.interpretador_colagem.interpretar(
+            source
+        ).eh_texto:
+
+            return True
+
+        return super().canInsertFromMimeData(
+            source
+        )
+
+    def insertFromMimeData(
+        self,
+        source
+    ):
+        """
+        Chamado pelo Ctrl+V. Imagem e arquivos copiados viram anexos
+        (mesmo caminho do arrastar-e-soltar); qualquer outra coisa é
+        colada como texto normal.
+        """
+
+        conteudo = self.interpretador_colagem.interpretar(
+            source
+        )
+
+        if conteudo.eh_imagem:
+
+            self.imagem_colada.emit(
+                conteudo.imagem
+            )
+
+            return
+
+        if conteudo.eh_arquivos:
+
+            self.arquivos_soltos.emit(
+                conteudo.caminhos
+            )
+
+            return
+
+        super().insertFromMimeData(
+            source
         )
 
     def keyPressEvent(
@@ -2746,6 +2864,10 @@ class ShaulaWindow(QMainWindow):
             self.anexar_caminhos
         )
 
+        self.entrada.imagem_colada.connect(
+            self.anexar_imagem_colada
+        )
+
         layout_entrada.addWidget(
             self.entrada,
             1
@@ -2869,6 +2991,19 @@ class ShaulaWindow(QMainWindow):
 
         self.atalho_voz.activated.connect(
             self.alternar_escuta
+        )
+
+        # Ctrl+V com o foco fora do campo de mensagem (na lista de
+        # conversas, na área do chat...): leva o foco para o campo e
+        # cola lá, para o print colado nunca se perder. Com o foco no
+        # campo, é o próprio QTextEdit que trata o Ctrl+V.
+        self.atalho_colar = QShortcut(
+            QKeySequence(QKeySequence.StandardKey.Paste),
+            self
+        )
+
+        self.atalho_colar.activated.connect(
+            self._colar_no_campo_de_mensagem
         )
 
         # Esc: cancela a gravação de voz ou interrompe a IA.
@@ -3769,6 +3904,8 @@ class ShaulaWindow(QMainWindow):
 
             miniatura = None
 
+            imagem_completa = None
+
             if (
                 anexos
                 and len(anexos) == len(descricoes)
@@ -3776,12 +3913,21 @@ class ShaulaWindow(QMainWindow):
             ):
                 miniatura = anexos[indice].imagens[0]
 
+                imagem_completa = anexos[indice].imagem_completa
+
+            cartao = CartaoAnexo(
+                descricao,
+                self.icones_arquivo,
+                miniatura,
+                imagem_completa
+            )
+
+            cartao.imagem_clicada.connect(
+                self.abrir_visualizador_imagem
+            )
+
             layout.addWidget(
-                CartaoAnexo(
-                    descricao,
-                    self.icones_arquivo,
-                    miniatura
-                ),
+                cartao,
                 0,
                 Qt.AlignRight
             )
@@ -3949,6 +4095,66 @@ class ShaulaWindow(QMainWindow):
 
         self.atualizar_area_anexos()
 
+    def anexar_imagem_colada(
+        self,
+        imagem
+    ):
+        """
+        Anexa como pendente uma imagem colada com Ctrl+V (QImage vinda
+        do campo de mensagem).
+        """
+
+        anexo = self.gerenciador_anexos.carregar_imagem(
+            imagem
+        )
+
+        if anexo is None:
+
+            QMessageBox.warning(
+                self,
+                "Imagem não suportada",
+                "Não foi possível anexar a imagem colada."
+            )
+
+            return
+
+        self.anexos_pendentes.append(
+            anexo
+        )
+
+        self.atualizar_area_anexos()
+
+    def _colar_no_campo_de_mensagem(self):
+
+        # Durante a gravação de voz o campo fica escondido atrás do
+        # painel de voz; nesse caso não há onde colar.
+        if not self.entrada.isVisible():
+
+            return
+
+        self.entrada.setFocus()
+
+        self.entrada.paste()
+
+    def abrir_visualizador_imagem(
+        self,
+        nome,
+        dados
+    ):
+        """Mostra a imagem inteira (clique na miniatura de um anexo)."""
+
+        if not VisualizadorImagem.abrir(
+            nome,
+            dados,
+            self
+        ):
+
+            QMessageBox.warning(
+                self,
+                "Imagem indisponível",
+                "Não foi possível abrir essa imagem."
+            )
+
     def remover_anexo(
         self,
         anexo
@@ -3975,7 +4181,7 @@ class ShaulaWindow(QMainWindow):
         mesmo espaço.
         """
 
-        miniatura = QLabel()
+        miniatura = MiniaturaClicavel()
 
         miniatura.setFixedSize(
             40,
@@ -4069,6 +4275,21 @@ class ShaulaWindow(QMainWindow):
             miniatura = self._criar_miniatura_anexo(
                 anexo
             )
+
+            if anexo.imagem_completa:
+
+                miniatura.setCursor(
+                    Qt.PointingHandCursor
+                )
+
+                miniatura.clicada.connect(
+                    lambda anexo=anexo: (
+                        self.abrir_visualizador_imagem(
+                            anexo.nome_arquivo,
+                            anexo.imagem_completa
+                        )
+                    )
+                )
 
             layout_chip.addWidget(
                 miniatura
