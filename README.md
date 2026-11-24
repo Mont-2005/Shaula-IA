@@ -1,60 +1,60 @@
 # Shaula IA 4.70 — Assistente Pessoal Local
 
-A **Shaula** é uma assistente virtual desenvolvida para funcionar localmente no Windows. Ela utiliza o **Ollama**, com o modelo `qwen3.5:9b`, para conversar, entender solicitações e executar diferentes tarefas no computador.
+A **Shaula** é uma assistente virtual desenvolvida para funcionar localmente no Windows. Ela utiliza o **Ollama**, com o modelo `qwen3.5:9b`, para conversar, interpretar solicitações e executar diferentes tarefas no computador.
 
-O projeto oferece duas formas de utilização: uma interface gráfica, desenvolvida com PySide6 (`interface.py`), e uma versão independente para uso pelo terminal (`main.py`).
+A aplicação possui uma interface gráfica desenvolvida com PySide6 (`interface.py`), mas também oferece uma versão independente para utilizar pelo terminal (`main.py`).
 
-Este README apresenta a organização e os recursos da versão **Shaula IA 4.70**, com informações baseadas na implementação atual do projeto.
+Esta documentação foi atualizada com base no código-fonte da versão **Shaula IA 4.70**, descrevendo os recursos e a organização que realmente fazem parte desta versão.
 
 ## O que mudou na versão 4.70
 
-A versão 4.70 trouxe melhorias na organização do código, no gerenciamento das conversas e na execução das ferramentas. O projeto passou a separar melhor as responsabilidades de cada componente, facilitando a manutenção e a evolução das funcionalidades.
+A versão 4.70 trouxe melhorias importantes na organização interna e no funcionamento da Shaula. O projeto passou a utilizar uma estrutura mais organizada em classes, separando melhor as responsabilidades de cada funcionalidade.
 
 Entre as principais mudanças estão:
 
-- **Melhoria do histórico:** a Shaula passou a gerenciar melhor o contexto das conversas. Quando ele se aproxima do limite, mensagens antigas podem ser compactadas ou resumidas para preservar as informações mais relevantes.
-- **Novos níveis de esforço:** foram ampliados os limites de contexto, resposta e execução de ferramentas, permitindo que o modelo trabalhe com mais informações.
-- **Atalho para desligamento:** pedidos diretos para desligar o computador são identificados antes de chegar ao modelo, garantindo que a ferramenta correspondente seja chamada.
-- **Desligamento programado:** agora é possível definir quanto tempo deve passar até o computador ser desligado, inclusive solicitando o desligamento imediato.
-- **Confirmações aprimoradas:** as caixas de autorização passaram a aparecer à frente das outras janelas, e uma confirmação pendente também pode ser cancelada pelo botão de interrupção.
-- **Correções gerais:** foram realizados ajustes na abertura de arquivos e programas, execução de comandos, lembretes, pesquisas, cálculos e gerenciamento de processos.
-- **Novo menu principal:** a interface ganhou uma barra de menus que reúne os recursos do aplicativo, incluindo conversas, anexos, lembretes, processos, janelas, monitores, rede, internet, calculadora e voz.
-- **Documentação revisada:** os arquivos, comandos e detalhes técnicos foram atualizados para acompanhar o código da versão 4.70.
+- **Melhoria da memória da conversa:** agora a Shaula consegue aproveitar melhor o histórico durante as respostas. Quando o contexto fica cheio, mensagens antigas são resumidas ou compactadas para preservar as informações mais importantes.
+- **Novos níveis de esforço:** foram ampliados os limites de contexto e resposta, permitindo que a assistente utilize mais informações durante o raciocínio.
+- **Atalho para desligar o computador:** pedidos diretos, como "desligue o computador", são reconhecidos antes de chegar ao modelo, garantindo que a caixa de confirmação seja apresentada.
+- **Desligamento programado:** agora é possível informar o tempo até o desligamento. O padrão é 60 segundos, mas também é possível desligar imediatamente.
+- **Melhorias nas confirmações:** as caixas de confirmação aparecem à frente das outras janelas, mesmo quando a Shaula está minimizada. Também é possível cancelar uma confirmação pendente pelo botão de interrupção.
+- **Correções de segurança e funcionamento:** foram corrigidos problemas relacionados à abertura de arquivos e programas, execução de comandos, lembretes, pesquisas na internet, cálculos e gerenciamento de processos.
+- **Barra de menus:** a janela ganhou um menu principal com acesso a todas as funcionalidades e a todos os dados do aplicativo (conversas, anexos, lembretes, processos, janelas e monitores, capturas, rede, internet, calculadora, esforço e voz). Veja a seção [Menu principal](#menu-principal).
+- **Documentação atualizada:** a estrutura de arquivos, os comandos e as informações técnicas foram revisados para corresponder ao conteúdo real do pacote.
 
 ## Como executar
 
-A maneira mais simples de iniciar a Shaula é executar o arquivo `Shaula.bat`.
+A maneira mais simples de iniciar a Shaula é dar dois cliques no arquivo `Shaula.bat`.
 
-Antes de abrir a interface, esse arquivo prepara o ambiente:
+Esse arquivo prepara o ambiente antes de abrir a interface:
 
-1. Define a pasta do projeto como diretório de trabalho.
-2. Verifica se o Ollama está respondendo em `http://127.0.0.1:11434/api/tags`.
-3. Caso necessário, procura o `ollama.exe` no PATH ou na pasta padrão de instalação.
+1. Define a pasta da própria Shaula como diretório de trabalho.
+2. Verifica se o Ollama está funcionando em `http://127.0.0.1:11434/api/tags`.
+3. Caso necessário, procura o executável `ollama.exe` no PATH ou na pasta de instalação padrão.
 4. Inicia o servidor Ollama em segundo plano.
-5. Aguarda a inicialização, realizando até 20 tentativas.
+5. Aguarda a inicialização do servidor, realizando até 20 tentativas.
 6. Verifica se o ambiente virtual `.venv` está disponível.
 7. Inicia a interface gráfica por meio de `interface.py`.
 
-Se o Ollama não iniciar dentro do tempo esperado, o processo é encerrado e uma mensagem de erro é apresentada.
+Se o Ollama não iniciar dentro do tempo esperado, o processo é encerrado com uma mensagem de erro.
 
-A interface também identifica falhas de comunicação com o Ollama. Entretanto, ainda não possui um mecanismo próprio de reconexão automática para repetir uma solicitação que falhou.
+A interface também identifica problemas de comunicação com o Ollama, mas não possui um mecanismo próprio de reconexão automática para repetir uma chamada que falhou.
 
-### Configurações
+### Configurações por variáveis de ambiente
 
-Algumas opções podem ser definidas por variáveis de ambiente:
+Algumas opções podem ser configuradas por meio de variáveis de ambiente:
 
 | Variável | Função |
 |---|---|
 | `SHAULA_CONFIRMAR` | Controla as confirmações de ações sensíveis. O padrão é `1` (ativado). O valor `0` desativa as confirmações. |
 | `SHAULA_ESFORCO` | Define o nível de esforço inicial, caso ainda não exista uma configuração salva. Aceita `baixo`, `medio`, `alto`, `extra` ou `max`. |
 
-O nível escolhido pela interface ou pelo comando do terminal é salvo em `~/.shaula/configuracoes.json`. Essa configuração tem prioridade sobre a variável de ambiente.
+A escolha feita pelo botão **Esforço** da interface, ou pelo comando correspondente no terminal, fica salva em `~/.shaula/configuracoes.json` e tem prioridade sobre a variável de ambiente.
 
 ### Níveis de esforço
 
-A Shaula possui cinco níveis de esforço, selecionados pelo botão **🧠 Esforço**, localizado na barra superior, ao lado do controle de Internet.
+A Shaula possui cinco níveis de esforço, selecionados pelo botão **🧠 Esforço** na barra superior, ao lado do controle de Internet.
 
-Cada nível determina quanto contexto o modelo pode utilizar, o limite de resposta e quantas rodadas de ferramentas podem ser executadas.
+Cada nível define quanto contexto o modelo pode utilizar, o limite de resposta e a quantidade máxima de rodadas de ferramentas.
 
 | Nível | Raciocínio | Contexto (`num_ctx`) | Resposta (`num_predict`) | Rodadas |
 |---|---|---:|---:|---:|
@@ -64,19 +64,19 @@ Cada nível determina quanto contexto o modelo pode utilizar, o limite de respos
 | Extra | Sim | 15360 | 4096 | 10 |
 | Máx | Sim | 18432 | 6144 | 12 |
 
-Alguns pontos importantes:
+Alguns detalhes importantes sobre esses níveis:
 
-- Níveis mais altos permitem utilizar mais informações, mas também aumentam o tempo de processamento e o consumo de memória.
-- O limite de resposta inclui os tokens utilizados pelo raciocínio do modelo.
-- Em placas com 8 GB de VRAM, os níveis Extra e Máx podem ultrapassar a memória disponível, fazendo com que parte do processamento seja transferida para a CPU.
+- Quanto maior o esforço, mais informações podem ser utilizadas durante a resposta. Em contrapartida, o processamento demora mais e exige mais memória de vídeo.
+- O limite de resposta também inclui os tokens utilizados pelo raciocínio do modelo.
+- Os níveis Extra e Máx podem ultrapassar a memória disponível em placas de vídeo com 8 GB de VRAM, fazendo com que parte do modelo seja executada pela CPU.
 - Nos níveis Baixo e Médio, sobram aproximadamente 3.200 tokens para o histórico. No nível Máx, esse espaço chega a aproximadamente 6.300 tokens.
-- Ao mudar o nível, o Ollama precisa carregar novamente o modelo na próxima mensagem.
-- A configuração é compartilhada entre as janelas e permanece salva entre as sessões.
-- Se o raciocínio consumir todo o limite disponível para resposta, a Shaula informa o problema e sugere aumentar o nível.
+- Quando o nível é alterado, o Ollama precisa carregar novamente o modelo na próxima mensagem.
+- A configuração é compartilhada entre todas as janelas e permanece salva entre as sessões.
+- Se o limite de resposta for consumido pelo raciocínio e não houver espaço para gerar uma resposta, a Shaula informa o problema e sugere aumentar o nível.
 
-Os valores foram definidos considerando o modelo `qwen3.5:9b` em uma GPU de 8 GB. Eles podem ser modificados em `CatalogoEsforco.PERFIS`, no arquivo `tools/esforco.py`.
+Os valores foram definidos pensando no modelo `qwen3.5:9b` em uma GPU de 8 GB. Eles podem ser ajustados em `CatalogoEsforco.PERFIS`, no arquivo `tools/esforco.py`.
 
-No terminal, também é possível consultar ou alterar o nível:
+No terminal, também é possível consultar ou alterar o nível utilizando:
 
 ```text
 esforço
@@ -85,9 +85,9 @@ esforço alto
 
 ### Instalação das dependências
 
-O pacote inclui o arquivo `Instalador Dependências Shaula.bat`, que prepara o ambiente virtual e instala os componentes necessários.
+O pacote inclui o arquivo `Instalador Dependências Shaula.bat`, responsável por preparar o ambiente virtual e instalar as dependências necessárias.
 
-Entre as principais dependências estão:
+Entre os componentes utilizados estão:
 
 - Python 3.13;
 - NumPy;
@@ -97,19 +97,19 @@ Entre as principais dependências estão:
 - requests;
 - PyMuPDF;
 - OpenCV;
-- faster-whisper e sounddevice (opcionais, utilizados para reconhecimento de voz).
+- faster-whisper e sounddevice (opcionais, utilizados para reconhecimento de voz);
+- Ollama para Windows;
+- Modelo `qwen3.5:9b`.
 
-Também é necessário ter o Ollama instalado no Windows e o modelo `qwen3.5:9b` disponível.
+O reconhecimento de voz é opcional. Caso alguma das bibliotecas necessárias não esteja disponível, a Shaula continua funcionando normalmente, apenas sem essa funcionalidade.
 
-O reconhecimento de voz é opcional. Se as bibliotecas necessárias não estiverem instaladas, a Shaula continua funcionando normalmente, mas sem esse recurso.
-
-**Observações:** o pacote não possui um `requirements.txt`. Além disso, `requests` é instalado, mas não é utilizado diretamente pelo código, que utiliza `urllib` nas pesquisas. O `pytest` também precisa ser instalado separadamente para executar os testes.
+**Observações:** o instalador não utiliza `requirements.txt`, pois esse arquivo não existe no pacote. Além disso, `requests` é instalado, mas não é utilizado diretamente pelo código, e `pytest` precisa ser instalado separadamente caso queira executar os testes.
 
 ---
 
 ## Estrutura de arquivos
 
-A organização do projeto na versão 4.70 está dividida entre os arquivos principais, a documentação, os testes e os módulos responsáveis pelas ferramentas.
+Abaixo está a organização encontrada no pacote da versão 4.70:
 
 ```text
 Shaula IA 4.70/
@@ -132,6 +132,7 @@ Shaula IA 4.70/
 ├── tests/
 │   ├── test_analisar_tela.py
 │   ├── test_anexos.py
+│   ├── test_banco_conversas.py
 │   ├── test_blocos_codigo.py
 │   ├── test_calculadora.py
 │   ├── test_cartao_anexo.py
@@ -156,6 +157,7 @@ Shaula IA 4.70/
     ├── anexos.py
     ├── armazenamento.py
     ├── arquivos.py
+    ├── banco_dados.py
     ├── bloco_codigo.py
     ├── cache.py
     ├── calculadora.py
@@ -191,6 +193,7 @@ Shaula IA 4.70/
     ├── programas.py
     ├── rede.py
     ├── registro.py
+    ├── repositorio_conversas.py
     ├── sistema.py
     ├── test_correcoes.py
     ├── test_correcoes_sistema.py
@@ -200,13 +203,13 @@ Shaula IA 4.70/
 
 ## Organização e funcionamento interno
 
-A Shaula utiliza uma arquitetura baseada em classes. A ideia é manter a interface, o processamento das mensagens, as ferramentas e o armazenamento separados, facilitando a manutenção do projeto.
+A Shaula utiliza uma arquitetura baseada em classes, procurando separar a interface, o processamento das mensagens, as ferramentas e o armazenamento de dados.
 
 ### Interface gráfica
 
-A classe `ShaulaWindow`, localizada em `interface.py`, controla a janela principal e conecta os diferentes componentes do sistema.
+A classe `ShaulaWindow`, localizada em `interface.py`, é responsável pela janela principal e pela comunicação entre os diferentes componentes.
 
-Entre os componentes gerenciados por ela estão:
+Ela gerencia:
 
 - `CacheComandos`;
 - `RegistroFerramentas`;
@@ -219,114 +222,127 @@ Entre os componentes gerenciados por ela estão:
 - `MenuPrincipal`;
 - `TrabalhadorIA`.
 
-A janela também controla a barra lateral de conversas, os anexos, o acesso à internet, a exibição do histórico e a abertura de conversas em novas janelas.
+Além disso, a janela controla a barra lateral de conversas, os anexos, a conexão com a internet, a exibição do histórico e a abertura de conversas em novas janelas.
 
-O menu principal é montado por `MenuPrincipal`, em `tools/menu_principal.py`, logo após a criação da interface.
+A barra de menus é montada pela classe `MenuPrincipal`, de `tools/menu_principal.py`, logo depois de `criar_interface()`.
 
-Para evitar que o processamento de uma mensagem trave a janela, cada solicitação utiliza uma instância própria de `TrabalhadorIA`, executada em uma thread separada.
+Cada mensagem processada utiliza uma instância própria de `TrabalhadorIA`, que executa o trabalho em uma thread separada para não bloquear a interface.
 
 ### Como uma mensagem é processada
 
-Quando o usuário envia uma mensagem, ela passa por algumas etapas até chegar ao Ollama:
+Quando o usuário envia uma mensagem, ela passa por algumas etapas antes de chegar ao modelo.
 
 1. `ShaulaWindow.enviar()` verifica o conteúdo da mensagem e os anexos.
-2. Comandos locais, como sair ou limpar a conversa atual, são identificados antes de consultar o modelo.
+2. Comandos locais, como sair ou limpar a conversa atual, são identificados antes de chamar o modelo.
 3. A mensagem é adicionada ao histórico da conversa selecionada.
 4. Se houver anexos, o `GerenciadorAnexos` identifica o tipo de arquivo e realiza o processamento necessário.
-5. Uma nova instância de `TrabalhadorIA` é criada para cuidar da solicitação.
-6. Antes de consultar o modelo, o `DetectorDesligar` verifica se existe um pedido direto para desligar o computador. Se encontrar, chama a ferramenta correspondente e apresenta a confirmação.
-7. A thread prepara o contexto, considerando o estado da internet e, quando necessário, o conteúdo extraído dos anexos.
-8. Se a internet estiver ligada e não houver anexos, o `DetectorPerguntaFactual` pode realizar uma pesquisa automática.
-9. O `OrcamentoContexto` verifica o tamanho das informações e ajusta o histórico de acordo com o nível de esforço.
-10. O Ollama recebe a mensagem, as configurações de raciocínio e os schemas das ferramentas disponíveis. Quando existem anexos, as ferramentas são omitidas para liberar espaço no contexto.
-11. Se o modelo solicitar uma ferramenta, o `RegistroFerramentas` identifica e executa a implementação correspondente. A quantidade de rodadas respeita o limite do nível de esforço.
-12. Ferramentas que não precisam de síntese têm seus resultados apresentados diretamente.
+5. Uma nova `TrabalhadorIA` é criada para processar a solicitação.
+6. Antes de consultar o modelo, o `DetectorDesligar` verifica se existe um pedido direto e claro para desligar o computador. Se encontrar, chama a ferramenta correspondente e apresenta a confirmação sem precisar consultar o modelo.
+7. A thread prepara o contexto, incluindo o estado da internet e, quando necessário, o conteúdo extraído dos anexos.
+8. Se a internet estiver ligada e não houver anexos, o `DetectorPerguntaFactual` pode realizar uma pesquisa automática antes da consulta ao modelo.
+9. O `OrcamentoContexto` verifica o tamanho das informações e ajusta o histórico para que tudo caiba no limite definido pelo nível de esforço.
+10. O Ollama recebe a mensagem, as configurações de raciocínio e os schemas das ferramentas disponíveis. Quando há anexos, as ferramentas são omitidas para liberar espaço no contexto.
+11. Caso o modelo solicite alguma ferramenta, o `RegistroFerramentas` identifica a implementação correspondente e executa a operação. A quantidade de rodadas é limitada pelo nível de esforço.
+12. Quando uma ferramenta não precisa de síntese, seu resultado é apresentado diretamente, sem uma nova chamada ao modelo.
 13. Quando uma ferramenta precisa de interpretação, como a pesquisa na internet, o resultado volta ao modelo para a elaboração da resposta final.
-14. Por fim, `ShaulaWindow.receber_resposta()` apresenta a resposta e salva o conteúdo no histórico.
+14. Por último, `ShaulaWindow.receber_resposta()` apresenta a resposta e salva o conteúdo no histórico.
 
-As mensagens internas utilizadas pelas ferramentas existem apenas durante o processamento e não são salvas no histórico permanente.
+As mensagens internas das ferramentas não são salvas no histórico permanente. Elas existem apenas durante o processamento daquela solicitação.
 
-Caso ocorra algum problema, como uma falha de comunicação com o Ollama ou o limite de rodadas ser atingido, a interface apresenta um aviso. Esse aviso não é registrado como resposta da assistente.
+Se ocorrer algum erro, como falha de comunicação com o Ollama ou limite de rodadas atingido, a interface apresenta um aviso, mas esse aviso não é registrado como resposta da assistente.
 
 ---
 
 ## Menu principal
 
-A interface possui uma barra de menus criada pela classe `MenuPrincipal`, localizada em `tools/menu_principal.py`.
-
-Ela reúne as funcionalidades da Shaula em um só lugar, dando acesso às **40 ferramentas** disponíveis no `RegistroFerramentas`, além das ações relacionadas a conversas, anexos, esforço e voz.
-
-Cada janela aberta possui sua própria barra de menus.
+A janela possui uma barra de menus, montada por `MenuPrincipal` (`tools/menu_principal.py`), que dá acesso pela interface a todas as funcionalidades da Shaula. Ela cobre as **40 ferramentas** do `RegistroFerramentas` e as ações sobre conversas, anexos, esforço e voz. Cada janela aberta possui a sua própria barra.
 
 ### Menus disponíveis
 
-| Menu | Funcionalidades |
+| Menu | Itens |
 |---|---|
-| **Arquivo** | Criar conversa (`Ctrl+N`), abrir a conversa atual em outra janela, anexar arquivo (`Ctrl+O`) e sair (`Ctrl+Q`). |
-| **Conversas** | Alternar entre conversas, renomear, fixar, desafixar, apagar e mostrar ou ocultar a barra lateral (`Ctrl+B`). |
-| **Programas e arquivos** | Abrir e fechar programas, acessar o menu Iniciar, buscar e abrir arquivos. |
-| **Calculadora** | Realizar cálculos, converter bases e executar operações com matrizes. |
+| **Arquivo** | Nova conversa (`Ctrl+N`), abrir a conversa atual em nova janela, anexar arquivo (`Ctrl+O`) e sair da Shaula (`Ctrl+Q`). |
+| **Conversas** | Ir para a conversa (lista todas, com a atual marcada e as fixadas com 📌), renomear, fixar ou desafixar, apagar e mostrar ou ocultar a barra lateral (`Ctrl+B`). |
+| **Programas e arquivos** | `abrir_programa`, `fechar_programa`, menu Iniciar, `buscar_arquivo` e `abrir_arquivo`. |
+| **Calculadora** | `calcular`, `converter_base` e o submenu **Matrizes** (soma, subtração, multiplicação, escalar, transposta, determinante, inversa e potência). |
 | **Lembretes** | Criar, listar e cancelar lembretes. |
-| **Janelas e telas** | Listar monitores e janelas, controlar janelas, mover programas entre monitores, tirar prints e analisar a tela. |
-| **Sistema** | Consultar informações do hardware, listar e finalizar processos, bloquear a tela, desligar o computador, cancelar desligamentos e utilizar a área de transferência. |
-| **Rede e internet** | Ativar ou desativar a internet, pesquisar, consultar o IP local, verificar o Wi-Fi e testar ping. |
-| **Configurações** | Alterar o nível de esforço e utilizar o comando por voz (`Ctrl+M`). |
-| **Ajuda** | Consultar a lista de ferramentas disponíveis e as informações sobre a Shaula. |
+| **Janelas e telas** | Listar monitores e janelas, controlar janela, mover programa para um monitor ou para outro monitor, tirar print e analisar a tela. |
+| **Sistema** | Informações do hardware, listar processos (comuns e protegidos), finalizar processo, bloquear a tela, desligar o computador, cancelar o desligamento, copiar texto e colar da área de transferência. |
+| **Rede e internet** | Chave **Internet ligada**, pesquisar na internet, IP local, Wi-Fi e ping. |
+| **Configurações** | Nível de esforço (os cinco níveis, com o atual marcado) e **Falar um comando (`Ctrl+M`)**. |
+| **Ajuda** | Lista das ferramentas disponíveis, gerada a partir do registro, e **Sobre a Shaula**. |
 
-As operações de ativar e desativar a internet são controladas pela opção **Internet ligada**, que utiliza o mesmo método `alternar_internet()` do botão localizado na barra superior.
+As ferramentas `ativar_internet` e `desativar_internet` são alcançadas pela chave **Internet ligada**, que usa o mesmo `alternar_internet()` do botão da barra superior.
 
-### Como os itens do menu funcionam
+### Organização orientada a objetos
 
-Quando o usuário seleciona uma ferramenta, a interface verifica se ela precisa de parâmetros.
+O módulo foi escrito com classes, herança e polimorfismo, sem funções soltas e sem `if/elif` por tipo. Os diagramas completos estão em `Documentação/Shaula_UML_Completo_4.70.md` (seção 12.1).
 
-Se precisar, o `DialogoParametros` cria um formulário automaticamente a partir do esquema JSON da ferramenta, utilizando os mesmos parâmetros enviados ao Ollama.
+**Catálogo do menu (padrão Composite)**
 
-O formulário pode apresentar campos de texto, números inteiros e decimais, opções, respostas de sim ou não e matrizes. Os campos obrigatórios são verificados antes da execução.
-
-As matrizes podem ser preenchidas com valores separados por espaço ou vírgula, utilizando uma linha para cada linha da matriz. Também é possível informar os valores em formato JSON, por exemplo:
-
-```text
-[[2, 1], [3, 4]]
-```
-
-Depois de preenchidos os parâmetros:
-
-1. O pedido aparece no chat como uma mensagem do usuário, identificada por `[Menu] Nome do item`.
-2. O `TrabalhadorFerramenta` executa a operação em uma thread separada.
-3. O `RegistroFerramentas.executar()` encaminha a solicitação para a ferramenta correspondente.
-4. As confirmações de ações sensíveis continuam funcionando normalmente.
-5. O resultado é apresentado por `ShaulaWindow.receber_resposta()` e salvo no histórico.
-
-Uma característica importante é que os itens do menu executam as ferramentas diretamente, sem passar pelo modelo. Por isso, suas respostas são imediatas e não dependem do nível de esforço.
-
-Existem duas exceções: `pesquisar_internet` e `analisar_tela`. Como essas operações precisam da interpretação do modelo, elas enviam uma mensagem pelo mesmo fluxo utilizado pelo chat.
-
-### Componentes do menu
-
-| Classe ou função | Responsabilidade |
+| Classe | Responsabilidade |
 |---|---|
-| `MenuPrincipal` | Monta a barra de menus e conecta seus itens à janela. |
-| `CatalogoMenu` | Define a organização das ferramentas nos menus. |
-| `ItemFerramenta` e `Submenu` | Representam os itens e submenus disponíveis. |
-| `DialogoParametros` | Cria os formulários de parâmetros. |
-| `TrabalhadorFerramenta` | Executa as ferramentas fora da thread da interface. |
-| `ler_matriz()` | Converte os valores digitados em uma matriz numérica. |
+| `ItemMenu` (abstrata) | Base de tudo o que aparece num menu: `adicionar_em()` cria as ações Qt e `nomes_de_ferramentas()` informa quais ferramentas o item alcança. |
+| `Separador` | Linha separadora. |
+| `ItemFerramenta` | Item ligado a uma ferramenta do registro. `executar()` manda executá-la direto, em thread. |
+| `ItemPeloChat` (abstrata) | Especializa `ItemFerramenta` para as ferramentas que dependem do modelo: `executar()` envia pelo chat a frase montada por `montar_texto()`. |
+| `ItemPesquisaInternet` e `ItemAnalisarTela` | Implementam `montar_texto()` para `pesquisar_internet` e `analisar_tela`. |
+| `Submenu` | Contém outros `ItemMenu`, inclusive outros submenus. Também serve de menu da barra. |
+| `CatalogoMenu` | Define em qual menu fica cada ferramenta e confirma que as 40 são alcançadas. |
 
-Enquanto uma ferramenta está em execução, a interface impede o envio de novas mensagens e a troca ou exclusão de conversas até que a operação termine.
+**Formulário de parâmetros (Factory e Template Method)**
 
-O atalho `Ctrl+M` continua sendo controlado pela própria janela, evitando conflitos entre os atalhos da interface e os itens do menu.
+| Classe | Responsabilidade |
+|---|---|
+| `CampoParametro` (abstrata) | Um campo do formulário. `valor()` lê o que foi digitado, trata o campo vazio e delega a conversão à subclasse. |
+| `CampoTexto`, `CampoInteiro`, `CampoNumero`, `CampoMatriz`, `CampoOpcoes`, `CampoBooleano` | Um campo para cada tipo de parâmetro. `CampoInteiro` e `CampoNumero` estendem `CampoTexto`, e `CampoBooleano` estende `CampoOpcoes`. |
+| `FabricaDeCampos` | Escolhe a subclasse certa a partir do esquema JSON do parâmetro. |
+| `DialogoParametros` | Monta o formulário (um campo por parâmetro), valida e devolve os argumentos. |
+| `LeitorMatriz` | Converte o texto digitado em matriz retangular de números. |
+
+**Execução e montagem da barra**
+
+| Classe | Responsabilidade |
+|---|---|
+| `MenuPrincipal` | Monta a barra e liga os itens à janela. É composto por `CatalogoMenu`, `ExecutorMenu`, `AcoesDaConversaAtual` e os submenus dinâmicos. |
+| `ExecutorMenu` | Confere se a Shaula está livre, abre o diálogo de parâmetros e entrega a execução ao próprio item. |
+| `TrabalhadorFerramenta` | Thread que chama `RegistroFerramentas.executar()`. |
+| `SubmenuDinamico` (abstrata) | Base de submenus refeitos a cada abertura. `SubmenuConversas` e `SubmenuEsforco` implementam `preencher()`. |
+| `AcoesDaConversaAtual` | Renomear, fixar e apagar a conversa aberta. |
+| `DialogoFerramentas` | Janela da Ajuda com a lista das ferramentas. |
+
+### Como um item de menu é executado
+
+1. `MenuPrincipal` cria cada ação pelo método `adicionar_em()` do próprio item. Quando o usuário escolhe, o `ExecutorMenu.acionar()` verifica se a Shaula está livre.
+2. Se a ferramenta tem parâmetros, o `DialogoParametros` monta um formulário a partir do esquema JSON dela (o mesmo que o Ollama recebe). Os campos são validados antes de executar, e o campo de número aceita vírgula.
+3. Matrizes podem ser digitadas com uma linha por linha e valores separados por espaço ou vírgula, ou no formato JSON (`[[2, 1], [3, 4]]`). A leitura é feita por `LeitorMatriz.ler()`.
+4. O `ExecutorMenu` chama `item.executar()`. É o polimorfismo que decide o caminho: `ItemFerramenta` executa direto e `ItemPeloChat` envia pelo chat.
+5. No caminho direto, o pedido aparece no chat como `[Menu] Nome do item`, seguido dos parâmetros. O `TrabalhadorFerramenta` executa a ferramenta pelo `RegistroFerramentas.executar()`, então as **confirmações de ações sensíveis continuam valendo** (desligar, finalizar processo, fechar programa e fechar janela).
+6. O resultado é apresentado por `ShaulaWindow.receber_resposta()` e salvo no histórico, como qualquer outra resposta.
+
+Os itens do menu **não passam pelo modelo** (exceto os de `ItemPeloChat`), então a resposta é imediata e não depende do nível de esforço.
+
+### Ferramentas que seguem pelo chat
+
+`pesquisar_internet` e `analisar_tela` precisam do modelo (a primeira para sintetizar os resultados, a segunda para interpretar a imagem). Por isso, `ItemPesquisaInternet` e `ItemAnalisarTela` montam uma frase (como "Pesquise na internet: ...") e a enviam pelo mesmo fluxo da mensagem digitada. Essa frase não é enviada se houver anexos pendentes, pois mensagens com anexo são processadas sem ferramentas.
+
+### Cuidados
+
+- Enquanto a Shaula responde, executa um item do menu ou grava a voz, os itens que executam ferramentas avisam que é preciso esperar. O `TrabalhadorFerramenta` fica em `ShaulaWindow.trabalhador`, então enviar mensagens, trocar ou apagar conversas e fechar a janela também esperam a ferramenta terminar.
+- O atalho `Ctrl+M` continua pertencendo à janela (`QShortcut`). No menu ele só aparece no texto, para não haver atalho ambíguo.
+- O texto das conversas é protegido contra o caractere `&`, que o Qt interpretaria como atalho de menu.
 
 ---
 
 ## Registro de ferramentas
 
-O `RegistroFerramentas` é responsável por organizar as ferramentas disponíveis e encaminhar cada solicitação para sua implementação.
+O `RegistroFerramentas` é responsável por organizar e disponibilizar as ferramentas que a Shaula pode utilizar.
 
-Ele também cria os serviços necessários e compartilha os componentes utilizados por diferentes ferramentas.
+Ele instancia os serviços necessários, compartilha objetos que precisam ser utilizados por diferentes ferramentas e encaminha cada solicitação para sua implementação correspondente.
 
 ### Serviços utilizados
 
-Entre os principais serviços gerenciados pelo registro estão:
+Entre os principais serviços criados pelo registro estão:
 
 - `EstadoInternet`;
 - `CacheComandos`;
@@ -343,18 +359,19 @@ Entre os principais serviços gerenciados pelo registro estão:
 - `NotificadorToast`;
 - `GerenciadorLembretes`.
 
-Alguns serviços dependem de outros para funcionar corretamente:
+Alguns serviços também dependem de outros para funcionar corretamente:
 
-- `BuscadorArquivos` e `GerenciadorJanelas` utilizam `CacheComandos`.
+- `BuscadorArquivos` utiliza `CacheComandos`.
+- `GerenciadorJanelas` também utiliza `CacheComandos`.
 - `GerenciadorProgramas` recebe `GerenciadorProcessos`.
 - `PesquisaInternet` utiliza `EstadoInternet`.
 - `CapturadorTela` trabalha com `GerenciadorJanelas` e `OcultadorJanelasProprias`.
 - `GerenciadorLembretes` utiliza `NotificadorToast` e `ArmazenamentoJson`.
-- `RegistroFerramentas` também recebe as configurações e o componente responsáveis pelas confirmações de ações sensíveis.
+- `RegistroFerramentas` recebe as configurações e o componente responsáveis pelas confirmações de ações sensíveis.
 
 ### Ferramentas disponíveis
 
-A interface gráfica possui **40 ferramentas concretas**, divididas em duas categorias.
+A versão gráfica possui **40 ferramentas concretas**, divididas entre operações matemáticas e funções relacionadas ao sistema.
 
 #### Ferramentas de cálculo — 10
 
@@ -406,31 +423,31 @@ A interface gráfica possui **40 ferramentas concretas**, divididas em duas cate
 | `VerificarWifiFerramenta` | `verificar_wifi` |
 | `AnalisarTelaFerramenta` | `analisar_tela` |
 
-O registro também valida os parâmetros obrigatórios. Se o modelo solicitar uma ferramenta sem informar algum dado necessário, a Shaula identifica qual informação está faltando e apresenta uma mensagem mais clara.
+O registro também verifica se os parâmetros obrigatórios foram enviados. Caso o modelo esqueça algum deles, a Shaula informa qual informação está faltando, em vez de apresentar um erro genérico.
 
 ### Evitando chamadas desnecessárias ao modelo
 
-Nem toda operação precisa que o modelo interprete o resultado de uma ferramenta.
+Nem toda ferramenta precisa que o modelo interprete seu resultado.
 
-Por isso, a classe `Ferramenta` possui a propriedade `precisa_de_sintese`, que utiliza `False` como padrão.
+Por isso, a classe `Ferramenta` possui a propriedade `precisa_de_sintese`, que é `False` por padrão.
 
-A maioria das ferramentas locais retorna o resultado diretamente ao usuário. A principal exceção é `pesquisar_internet`, pois os resultados encontrados precisam voltar ao modelo para serem organizados em uma resposta.
+A maioria das operações locais retorna seu resultado diretamente ao usuário. A exceção é a pesquisa na internet, que precisa passar novamente pelo modelo para transformar os resultados encontrados em uma resposta organizada.
 
 ---
 
 ## Modo de terminal — `main.py`
 
-Além da interface gráfica, a Shaula pode ser utilizada diretamente pelo terminal.
+Além da interface gráfica, a Shaula também pode ser utilizada diretamente pelo terminal.
 
-O arquivo `main.py` funciona de maneira independente: ele não inicia `interface.py` e também não faz parte do processo executado pelo `Shaula.bat`.
+O arquivo `main.py` funciona de maneira independente e não inicia `interface.py` nem faz parte do processo executado por `Shaula.bat`.
 
-Essa versão utiliza o mesmo `RegistroFerramentas`, mas oferece um conjunto menor de operações.
+Ele utiliza o mesmo `RegistroFerramentas`, mas disponibiliza um conjunto menor de funcionalidades.
 
-A lógica principal está na classe `AssistenteTerminal`, responsável pelo histórico, registro de ferramentas e controle do contexto.
+A lógica principal está na classe `AssistenteTerminal`, que mantém o histórico, o registro de ferramentas e o controle do contexto.
 
-O processamento começa quando `AssistenteTerminal().executar()` é chamado por meio da função `main()`.
+O processamento só começa quando `AssistenteTerminal().executar()` é chamado, por meio da função `main()`.
 
-As 13 ferramentas disponíveis no terminal são:
+O modo de terminal possui 13 ferramentas:
 
 - `abrir_programa`;
 - `buscar_arquivo`;
@@ -446,7 +463,7 @@ As 13 ferramentas disponíveis no terminal são:
 - `matriz_potencia`;
 - `converter_base`.
 
-Assim como na interface gráfica, o terminal utiliza os níveis de esforço, ajusta o contexto antes das chamadas ao Ollama e limita a quantidade de rodadas de ferramentas.
+Assim como na interface gráfica, ele utiliza os níveis de esforço, ajusta o contexto antes das chamadas ao Ollama e limita a quantidade de rodadas de ferramentas.
 
 Para encerrar a execução, basta digitar `sair` ou utilizar `Ctrl+C` ou `Ctrl+D`.
 
@@ -454,69 +471,71 @@ Para encerrar a execução, basta digitar `sair` ou utilizar `Ctrl+C` ou `Ctrl+D
 
 ## Pesquisa na internet — Strategy
 
-A pesquisa na internet utiliza o padrão de projeto **Strategy**, permitindo trabalhar com diferentes mecanismos de busca sem precisar alterar a lógica principal do sistema.
+A pesquisa na internet foi organizada utilizando o padrão de projeto **Strategy**, permitindo trabalhar com diferentes mecanismos de busca sem precisar alterar a lógica principal do sistema.
 
-O acesso à internet é controlado por `EstadoInternet`, que começa desativado.
+O controle de acesso à internet fica em `EstadoInternet`, que começa desativado.
 
-A classe `PesquisaInternet` recebe esse estado e os mecanismos de busca disponíveis. Atualmente, utiliza:
+A classe `PesquisaInternet` recebe esse estado e os mecanismos disponíveis. Atualmente, utiliza:
 
 1. `DuckDuckGo` como mecanismo principal.
-2. `Bing` como alternativa quando a primeira busca não apresenta resultados suficientes.
+2. `Bing` como alternativa caso a primeira busca não seja suficiente.
 
 Ambos implementam a abstração `MecanismoBusca`.
 
-Também existem alguns componentes auxiliares:
+Também existem componentes auxiliares:
 
 - `DuckParser`: interpreta os resultados do DuckDuckGo.
 - `BingParser`: interpreta os resultados do Bing.
-- `FormatadorTexto`: organiza os links e extrai URLs.
+- `FormatadorTexto`: organiza links e extrai URLs.
 - `DetectorPerguntaFactual`: identifica perguntas que podem precisar de uma pesquisa automática.
 
 ### Pesquisa automática
 
-Quando a internet está ativada, a Shaula pode identificar perguntas que dependem de informações externas e realizar uma pesquisa antes de consultar o modelo.
+Quando a internet está ativada, a Shaula pode identificar que uma pergunta precisa de informações externas e realizar uma busca antes de consultar o modelo.
 
-O `DetectorPerguntaFactual` utiliza alguns critérios para reconhecer essas perguntas, como:
+O `DetectorPerguntaFactual` considera, entre outros critérios:
 
 - Mensagens terminadas em `?` ou `？`.
-- Perguntas iniciadas por expressões como "quem", "quando", "onde", "como", "qual", "quanto" e "é verdade".
+- Perguntas que começam com expressões como "quem", "quando", "onde", "como", "qual", "quanto" e "é verdade".
 
-Nem toda pergunta, porém, precisa de uma pesquisa na internet.
+Entretanto, nem toda pergunta precisa de uma pesquisa na internet.
 
-Para evitar buscas desnecessárias, o sistema considera algumas exceções, principalmente quando a mensagem envolve:
+O sistema possui algumas exceções para evitar buscas desnecessárias, principalmente quando a mensagem envolve:
 
 - A própria Shaula.
 - Informações do usuário ou do computador.
 - Processos, janelas, monitores e lembretes.
 - Cálculos matemáticos e conversões.
-- Matrizes e outras operações numéricas.
+- Matrizes e operações numéricas.
 
 Nesses casos, a intenção é permitir que o modelo utilize as ferramentas locais disponíveis.
 
-O detector também procura reconhecer perguntas que dependem de mensagens anteriores, como "e quando isso aconteceu?", "e o segundo?" ou "o que eu falei?". Assim, uma pergunta de acompanhamento não é tratada automaticamente como uma nova pesquisa sem relação com o assunto anterior.
+Também são identificadas perguntas que dependem do histórico da conversa, como "e quando isso aconteceu?", "e o segundo?" ou "o que eu falei?".
 
-Essa identificação utiliza padrões de texto e, portanto, não é infalível. O próprio modelo ainda pode solicitar uma pesquisa quando considerar necessário.
+Isso evita que uma pergunta de acompanhamento seja interpretada como uma nova pesquisa sem relação com o assunto anterior.
+
+Essa identificação é feita por padrões de texto, portanto não é infalível. O próprio modelo ainda pode solicitar uma pesquisa quando considerar necessário.
 
 ### Fontes das pesquisas
 
-Durante uma pesquisa, as URLs encontradas são armazenadas para utilização naquela solicitação.
+As URLs encontradas durante uma pesquisa são armazenadas durante o processamento da mensagem.
 
-Se a resposta final não apresentar nenhuma dessas URLs, a Shaula acrescenta uma seção chamada `Fontes:`, contendo os endereços encontrados.
+Caso a resposta final não apresente nenhuma dessas URLs, a Shaula acrescenta uma seção chamada `Fontes:` com os endereços encontrados.
 
 ---
 
 ## Anexos — Strategy
 
-A Shaula permite enviar arquivos junto com as mensagens, facilitando a análise de documentos, imagens, vídeos e códigos.
+A Shaula também permite enviar arquivos junto com as mensagens.
 
-O processamento é centralizado em `GerenciadorAnexos`, que utiliza quatro estratégias, de acordo com o tipo de arquivo:
+O processamento fica concentrado em `GerenciadorAnexos`, que utiliza quatro estratégias diferentes, de acordo com o tipo de arquivo:
 
 - `EstrategiaImagem`;
 - `EstrategiaPDF`;
 - `EstrategiaVideo`;
 - `EstrategiaTexto`.
 
-Todas seguem a interface `EstrategiaAnexo` e retornam um objeto `Anexo`, que reúne o nome do arquivo, o conteúdo extraído, as imagens necessárias e as informações utilizadas na exibição do chat.
+Todas seguem a interface `EstrategiaAnexo` e retornam um objeto `Anexo`, que contém o nome do arquivo, o conteúdo extraído, as imagens quando necessário e informações para exibição no chat.
 
 ### Tipos de arquivos aceitos
 
@@ -527,36 +546,36 @@ Todas seguem a interface `EstrategiaAnexo` e retornam um objeto `Anexo`, que re�
 | Vídeos | MP4, MOV, AVI, MKV e WEBM | 300 MB |
 | Textos e códigos | TXT, MD, LOG, CSV, JSON, YAML, XML, INI, CFG, PY, JS, TS, JAVA, C, CPP, H, CS, SQL, BAT, SH, HTML e CSS | 5 MB |
 
-Além do tamanho dos arquivos, existem limites para o processamento:
+Além dos limites de tamanho, existem algumas restrições de processamento:
 
-- **Imagens:** são redimensionadas para até 768 pixels no maior lado, respeitando a orientação EXIF.
+- **Imagens:** redimensionadas para no máximo 768 pixels no maior lado, respeitando a orientação EXIF.
 - **PDFs:** o texto extraído é limitado a 12.000 caracteres. Quando o documento é escaneado, são renderizadas no máximo quatro páginas.
 - **Vídeos:** são selecionados até quatro frames para análise. O áudio não é processado.
-- **Textos e códigos:** o conteúdo é limitado a 12.000 caracteres, e arquivos com BOM UTF-8 são tratados corretamente.
+- **Textos e códigos:** o conteúdo é limitado a 12.000 caracteres e arquivos com BOM UTF-8 são tratados corretamente.
 
-Esses limites ajudam a evitar que os anexos ocupem espaço demais no contexto do modelo, especialmente em computadores com pouca memória de vídeo.
+Esses limites foram definidos para evitar que os anexos ocupem espaço demais no contexto do modelo, especialmente em computadores com pouca VRAM.
 
-### Processamento de PDFs
+### Como os PDFs são processados
 
-A `EstrategiaPDF` utiliza a biblioteca `pymupdf` para extrair o texto dos documentos.
+A `EstrategiaPDF` utiliza a biblioteca `pymupdf` para tentar extrair o texto do documento.
 
-Quando encontra texto suficiente, o conteúdo é enviado ao modelo como material de referência.
+Quando consegue encontrar texto suficiente, o conteúdo é enviado ao modelo como referência textual.
 
 Se o PDF tiver pouco ou nenhum texto, ele é tratado como um documento provavelmente escaneado. Nesse caso, suas páginas são convertidas em imagens para análise.
 
-### Processamento de vídeos
+### Como os vídeos são processados
 
-A `EstrategiaVideo` utiliza `opencv-python-headless` para selecionar até quatro frames distribuídos ao longo do vídeo.
+A `EstrategiaVideo` utiliza `opencv-python-headless` para selecionar alguns frames distribuídos ao longo do vídeo.
 
-O modelo recebe essas imagens estáticas, e não o vídeo completo. Por isso, a Shaula consegue analisar o conteúdo visual, mas não interpreta continuamente os movimentos nem processa o áudio.
+O modelo recebe essas imagens estáticas, não o vídeo completo. Portanto, a Shaula consegue analisar elementos visuais, mas não realiza uma interpretação contínua do movimento nem do áudio.
 
 ### Como os anexos chegam ao modelo
 
-O conteúdo dos anexos não é inserido diretamente na mensagem escrita pelo usuário.
+O conteúdo textual dos anexos não é colocado diretamente dentro da mensagem escrita pelo usuário.
 
-Em vez disso, a `TrabalhadorIA` cria uma mensagem de sistema separada, identificando o material como referência. Isso ajuda a evitar que instruções presentes dentro de um arquivo sejam confundidas com instruções do próprio sistema.
+Em vez disso, a `TrabalhadorIA` cria uma mensagem de sistema separada, identificando o conteúdo como material de referência. Isso ajuda a evitar que instruções presentes dentro de um arquivo sejam confundidas com instruções do próprio sistema.
 
-Os arquivos originais e seus conteúdos completos não são armazenados no histórico. Apenas uma anotação indicando o envio permanece registrada.
+Os arquivos originais e seus conteúdos completos não são salvos no histórico. Apenas uma anotação indicando o envio permanece registrada.
 
 Por exemplo:
 
@@ -566,9 +585,9 @@ Por exemplo:
 
 O conteúdo completo é utilizado somente durante a solicitação atual.
 
-### Exibição dos anexos
+### Exibição dos anexos no chat
 
-Na interface, os arquivos aparecem em cartões posicionados acima da mensagem do usuário.
+Na interface, os arquivos aparecem em cartões próprios, posicionados acima da mensagem do usuário.
 
 Cada cartão apresenta:
 
@@ -577,14 +596,14 @@ Cada cartão apresenta:
 - Formato e informações adicionais, como a quantidade de páginas de um PDF.
 - Miniatura da imagem quando um arquivo de imagem acabou de ser enviado.
 
-Quando um PDF ultrapassa o limite de leitura, a interface informa que somente parte do documento foi processada.
+Quando um PDF ultrapassa o limite de leitura, a interface informa que apenas parte do documento foi processada.
 
-Ao abrir uma conversa antiga, os cartões continuam aparecendo, mas as miniaturas são substituídas pelos ícones. Isso acontece porque os arquivos originais não são armazenados.
+Ao reabrir uma conversa antiga, os cartões continuam aparecendo, mas as miniaturas das imagens são substituídas pelos ícones, pois os arquivos originais não são armazenados.
 
-Os principais componentes responsáveis por essa funcionalidade são:
+Os componentes responsáveis por essa funcionalidade são:
 
 - `NotaAnexo`: cria e interpreta as anotações dos arquivos.
-- `DescricaoAnexo`: organiza o nome, formato e informações do arquivo.
+- `DescricaoAnexo`: organiza nome, formato e informações do arquivo.
 - `IconeArquivo`: desenha o ícone correspondente.
 - `CartaoAnexo`: monta o cartão exibido na interface.
 
@@ -594,27 +613,23 @@ Os principais componentes responsáveis por essa funcionalidade são:
 
 A Shaula também permite enviar mensagens por voz.
 
-O reconhecimento utiliza o padrão Strategy para separar a captura do áudio de sua conversão em texto.
+O reconhecimento utiliza o padrão Strategy para separar a gravação do áudio e sua conversão em texto.
 
-Depois que a gravação é transcrita, o texto segue o mesmo fluxo das mensagens digitadas. Isso significa que a Shaula pode utilizar suas ferramentas normalmente, mesmo quando o comando é enviado por voz.
+Uma característica importante é que a voz utiliza o mesmo fluxo das mensagens digitadas. Depois que o áudio é transcrito, o texto é enviado normalmente para a Shaula, que pode utilizar qualquer uma de suas ferramentas disponíveis.
 
-Por exemplo, é possível solicitar ações como:
-
-- "Abre o Discord."
-- "Cria um lembrete para daqui a 30 minutos."
-- "Tira um print do monitor 2."
+Assim, comandos como "abre o Discord", "cria um lembrete para daqui a 30 minutos" e "tira um print do monitor 2" também podem ser executados por voz.
 
 ### Como utilizar
 
 1. Clique no botão de microfone ao lado do campo de mensagem ou pressione `Ctrl+M`.
-2. A interface apresenta um painel de gravação com um indicador de volume.
+2. A interface exibirá um painel de gravação com o indicador de volume.
 3. Fale normalmente. A gravação continua até que você solicite seu encerramento.
 4. Para finalizar e transcrever, clique novamente no botão ou pressione `Ctrl+M`.
 5. Para cancelar a gravação, utilize o botão de cancelamento ou pressione `Esc`.
 
 A gravação possui um limite de segurança de 10 minutos.
 
-Por padrão, o texto reconhecido é enviado automaticamente. Entretanto, se já houver conteúdo digitado no campo de mensagem, a transcrição é adicionada ao texto e aguarda a revisão do usuário.
+Por padrão, o texto reconhecido é enviado automaticamente. Entretanto, se já existir algum conteúdo digitado no campo de mensagem, a transcrição será adicionada ao texto e aguardará a revisão do usuário.
 
 O microfone também fica desativado enquanto a Shaula está processando uma resposta.
 
@@ -639,30 +654,30 @@ Os principais componentes estão em `tools/voz.py`:
 
 O reconhecimento utiliza o `faster-whisper`, com o modelo `medium`, processamento em CPU, quantização `int8` e idioma português.
 
-### Decisões de implementação
+### Algumas decisões de implementação
 
 - **Precisão:** o modelo `medium` foi escolhido por apresentar um reconhecimento melhor em português do que modelos menores. Também são utilizados busca em feixe de 5 e normalização de volume.
 - **Funcionamento offline:** depois de baixar o modelo, a transcrição pode funcionar sem internet.
-- **Carregamento sob demanda:** o modelo de voz não é carregado automaticamente. Ele é inicializado quando o microfone é utilizado.
+- **Carregamento sob demanda:** o modelo de voz não é carregado automaticamente por padrão. Ele é inicializado quando o microfone é utilizado.
 - **Uso da CPU:** o Whisper trabalha na CPU para não disputar a memória da GPU com o modelo principal do Ollama.
 - **Liberação de memória:** após 180 segundos sem utilização, o modelo de voz é descarregado da memória.
-- **Dependências opcionais:** sem `faster-whisper` ou `sounddevice`, a interface continua funcionando, mas a gravação por voz fica indisponível.
+- **Dependências opcionais:** sem `faster-whisper` ou `sounddevice`, a interface continua funcionando normalmente, mas a gravação por voz fica indisponível.
 
-O modelo `medium` ocupa aproximadamente 1,5 GB de memória RAM. Na primeira utilização, é necessário baixar os arquivos correspondentes.
+O modelo `medium` ocupa aproximadamente 1,5 GB de memória RAM. Sua primeira utilização exige o download dos arquivos necessários.
 
-O envio automático da transcrição pode ser alterado pela configuração `ENVIAR_VOZ_AUTOMATICAMENTE`, localizada em `interface.py`.
+Para alterar o comportamento do envio automático, basta modificar `ENVIAR_VOZ_AUTOMATICAMENTE` em `interface.py`.
 
-Como os comandos reconhecidos podem executar ações reais no computador, também é possível desativar o envio automático e revisar a transcrição antes de executá-la.
+Como os comandos reconhecidos podem executar ações reais, é possível desativar o envio automático para revisar a transcrição antes de executá-la.
 
 ---
 
 ## Blocos de código e botão Copiar
 
-Quando a Shaula gera uma resposta com código, a interface identifica os trechos delimitados por cercas de código e os apresenta em blocos separados.
+Quando a Shaula gera uma resposta que contém código, a interface identifica os trechos entre cercas de código e os apresenta em blocos separados.
 
 Cada bloco possui um cabeçalho com a linguagem identificada e um botão **Copiar**, que envia o código completo para a área de transferência.
 
-A exibição também oferece:
+A exibição também conta com:
 
 - Fonte monoespaçada (Consolas).
 - Destaque de sintaxe para diferentes linguagens.
@@ -673,9 +688,9 @@ A exibição também oferece:
 
 Entre as linguagens reconhecidas estão Python, JavaScript, TypeScript, C, C++, C#, Java, Kotlin, PHP, Go, Rust, SQL, shell e JSON.
 
-Se uma resposta contiver um bloco de código que não foi fechado corretamente, a interface considera que ele continua até o final da mensagem.
+Quando uma resposta contém um bloco de código que não foi fechado corretamente, a interface considera que ele continua até o final da mensagem.
 
-A implementação também evita que operadores como `**`, utilizados em operações matemáticas do Python, sejam removidos durante a formatação.
+Essa implementação também evita que operadores como `**`, utilizados em operações matemáticas do Python, sejam removidos durante a formatação.
 
 Os componentes responsáveis estão em `tools/bloco_codigo.py`:
 
@@ -691,22 +706,24 @@ Os componentes responsáveis estão em `tools/bloco_codigo.py`:
 
 ## Interromper a resposta da IA
 
-Enquanto a Shaula está processando uma mensagem, o botão de enviar é substituído por um botão vermelho de interrupção (■).
+Durante o processamento de uma mensagem, o botão de enviar é substituído por um botão vermelho de interrupção (■).
 
-Também é possível interromper a resposta pressionando `Esc`.
+Também é possível interromper utilizando a tecla `Esc`.
 
-Como o Ollama é chamado sem streaming, a interface normalmente aguarda até que o modelo termine de gerar toda a resposta. Para permitir o cancelamento durante esse processo, a Shaula utiliza a classe `ChatInterrompivel`, localizada em `tools/ollama_chat.py`.
+Como o Ollama é chamado sem streaming, uma solicitação normalmente permanece aguardando até que o modelo termine de gerar toda a resposta.
 
-Ela executa a chamada ao modelo em uma thread auxiliar e verifica periodicamente se o usuário solicitou a interrupção.
+Para permitir a interrupção, a Shaula utiliza a classe `ChatInterrompivel`, localizada em `tools/ollama_chat.py`.
+
+Ela executa a chamada ao modelo em uma thread auxiliar e verifica periodicamente se o usuário solicitou o cancelamento.
 
 Quando isso acontece:
 
-1. A thread responsável pela resposta é liberada sem precisar aguardar o modelo terminar.
+1. A thread responsável pela resposta é liberada sem precisar esperar o modelo terminar.
 2. A conexão HTTP com o Ollama é fechada, tentando interromper também a geração no servidor.
 3. A interface informa que a resposta foi interrompida.
 4. O botão volta ao estado normal.
 
-Se houver uma confirmação de ação pendente, a interrupção também cancela a confirmação, considerando a ação como não autorizada.
+Se existir uma confirmação de ação pendente, a interrupção também cancela a confirmação, considerando a ação como não autorizada.
 
 **É importante lembrar que interromper uma resposta não desfaz ações que já foram executadas.** Se a Shaula já abriu um programa, por exemplo, ele continuará aberto.
 
@@ -718,9 +735,9 @@ A mensagem do usuário permanece no histórico, mas a resposta interrompida não
 
 ## Conversas e histórico
 
-A interface gráfica permite trabalhar com várias conversas independentes.
+A interface gráfica da versão 4.70 permite trabalhar com várias conversas independentes.
 
-Esse gerenciamento é realizado pela classe `GerenciadorConversas`, responsável por manter as informações de cada conversa e permitir a troca entre elas sem perder o histórico.
+Esse gerenciamento é feito pela classe `GerenciadorConversas`, que mantém as informações de cada conversa e permite alternar entre elas sem perder o histórico.
 
 Cada conversa possui:
 
@@ -729,7 +746,7 @@ Cada conversa possui:
 - Estado de fixação.
 - Data de criação.
 - Data da última atualização.
-- Arquivo de histórico independente.
+- Mensagens próprias, guardadas no banco de dados.
 
 A conversa selecionada é representada pela classe `HistoricoConversa`.
 
@@ -749,7 +766,7 @@ O título também pode ser gerado automaticamente com base na primeira mensagem 
 
 Quando novas janelas são abertas pela própria interface, elas compartilham o mesmo `GerenciadorConversas`.
 
-### Armazenamento do histórico
+### Como o histórico é armazenado
 
 O histórico possui um limite de 60 mensagens, definido por:
 
@@ -759,64 +776,68 @@ HistoricoConversa.MAX_MENSAGENS_HISTORICO = 60
 
 A mensagem de sistema não é armazenada em disco, pois é reconstruída pelo código atual sempre que necessário.
 
-Somente mensagens textuais do usuário e da assistente são persistidas. As mensagens internas utilizadas pelas ferramentas não fazem parte do histórico permanente.
+Somente mensagens do usuário e da assistente com conteúdo textual são persistidas. Mensagens internas de ferramentas não fazem parte do histórico permanente.
 
-A gravação dos dados utiliza `ArmazenamentoJson`, que primeiro escreve as informações em um arquivo temporário e depois substitui o arquivo definitivo.
+As conversas e as mensagens ficam em um banco de dados **SQLite**, um único arquivo (`shaula.db`) que não precisa de servidor e funciona totalmente offline. O acesso é dividido em três classes:
 
-Esse processo ajuda a evitar a perda de dados em caso de fechamento inesperado durante a gravação ou quando duas janelas tentam atualizar o mesmo arquivo simultaneamente.
+- `BancoSqlite` (`tools/banco_dados.py`): abre as conexões, controla as transações e cria o esquema do banco na primeira execução.
+- `RepositorioConversas` (`tools/repositorio_conversas.py`): concentra todo o SQL, isto é, inserir, listar, renomear, fixar e apagar conversas, e carregar e gravar mensagens.
+- `GerenciadorConversas` (`tools/conversas.py`): aplica as regras (título padrão e automático, ordenação da barra lateral) e usa o repositório para guardar.
 
-### Gerenciamento do contexto
+O banco tem duas tabelas:
 
-Uma das melhorias importantes da versão 4.70 foi a forma como o histórico é preparado antes de ser enviado ao modelo.
+| Tabela | Conteúdo |
+|---|---|
+| `conversas` | `id`, `titulo`, `titulo_automatico`, `fixado`, `criado_em`, `atualizado_em`. |
+| `mensagens` | `id`, `conversa_id`, `papel` (`user` ou `assistant`), `conteudo`, `criado_em`. |
+
+Cada mensagem pertence a uma conversa por chave estrangeira. Ao apagar uma conversa, as mensagens dela são apagadas junto (`ON DELETE CASCADE`).
+
+Cada gravação acontece dentro de uma transação: ou tudo é salvo, ou nada é. Isso evita histórico pela metade se a Shaula for fechada no meio de uma gravação, e permite que várias janelas usem o mesmo banco ao mesmo tempo sem perder alterações. Ao salvar, só as mensagens novas são inseridas; as antigas mantêm o mesmo `id` e a mesma data.
+
+O `HistoricoConversa` não sabe onde as mensagens ficam: recebe um armazenamento com `ler`, `gravar` e `remover`. Por isso o mesmo código funciona com o banco (`MensagensSqlite`) ou com um arquivo JSON (`ArmazenamentoJson`).
+
+### Limite de contexto e memória da conversa
+
+Uma das melhorias importantes da versão 4.70 foi justamente a forma como o histórico chega ao modelo.
 
 Embora até 60 mensagens possam permanecer salvas, isso não significa que todas serão enviadas integralmente ao Ollama em cada solicitação.
 
 O espaço disponível depende do nível de esforço, do prompt de sistema, das ferramentas e do limite reservado para a resposta.
 
-Para controlar esse espaço, a Shaula utiliza `OrcamentoContexto.ajustar()`.
+Para lidar com isso, a Shaula utiliza `OrcamentoContexto.ajustar()`.
 
-Quando o contexto se aproxima do limite, o sistema pode realizar três operações:
+Quando o contexto está próximo do limite, o sistema realiza três operações:
 
 1. **Compactação:** respostas antigas e muito longas da Shaula são encurtadas. As mensagens do usuário permanecem intactas.
-2. **Resumo:** se ainda faltar espaço, mensagens antigas são retiradas do contexto e substituídas por um resumo criado por `ResumidorHistorico`.
-3. **Redução de textos de apoio:** se necessário, conteúdos de pesquisas, anexos e resultados de ferramentas também são reduzidos.
+2. **Resumo:** se ainda faltar espaço, mensagens antigas são retiradas do contexto e substituídas por um resumo curto, criado por `ResumidorHistorico`.
+3. **Redução de textos de apoio:** caso ainda seja necessário, conteúdos de pesquisas, anexos e resultados de ferramentas são reduzidos.
 
 O resumo possui limite de 600 tokens e utiliza até 30% do espaço livre disponível, desde que haja espaço suficiente.
 
-Na prática, esse processo ajuda a manter as informações mais recentes da conversa sem precisar enviar todo o histórico a cada mensagem.
+Na prática, isso permite que a Shaula mantenha melhor o contexto das conversas recentes, sem precisar enviar todo o histórico a cada mensagem.
 
-Entretanto, detalhes muito antigos ou informações que estavam no meio de respostas extensas podem acabar sendo perdidos.
+Entretanto, informações muito antigas ou detalhes que estavam no meio de respostas extensas podem acabar sendo perdidos.
 
-### Migração de históricos antigos
+### Históricos de versões anteriores
 
-A versão 4.70 também permite migrar históricos utilizados em versões anteriores.
-
-Se o arquivo abaixo existir e o novo índice de conversas ainda não tiver sido criado, o `GerenciadorConversas` tenta realizar a migração automaticamente:
-
-```text
-~/.shaula/historico_conversa.json
-```
+Até a versão 4.73.2 as conversas eram guardadas em arquivos JSON (`indice.json` e um arquivo por conversa). A partir desta versão elas ficam no banco SQLite e **não há migração automática**: arquivos JSON de conversas antigas não são lidos nem apagados.
 
 ---
 
 ## Onde os dados ficam armazenados
 
-A Shaula utiliza a pasta `.shaula`, localizada no diretório pessoal do usuário, para armazenar suas informações.
+A Shaula utiliza a pasta `.shaula`, localizada no diretório pessoal do usuário, para guardar suas informações.
 
 ### Conversas
 
 Por padrão, os arquivos ficam em:
 
 ```text
-%USERPROFILE%\.shaula\conversas\
-│
-├── indice.json
-├── <id_conversa_1>.json
-├── <id_conversa_2>.json
-└── ...
+%USERPROFILE%\.shaula\conversas\shaula.db
 ```
 
-O arquivo `indice.json` reúne as informações gerais das conversas, enquanto cada arquivo individual armazena o histórico correspondente.
+Esse único arquivo SQLite guarda a lista de conversas e as mensagens de cada uma. Enquanto a Shaula está aberta, o SQLite também cria ao lado dele os arquivos auxiliares `shaula.db-wal` e `shaula.db-shm`; eles fazem parte do banco e não devem ser apagados. Para consultar o conteúdo, é possível abrir o `shaula.db` em qualquer visualizador de SQLite, como o DB Browser for SQLite.
 
 ### Cache
 
@@ -846,7 +867,7 @@ O script temporário utilizado para exibir notificações é armazenado em:
 
 ### Capturas de tela
 
-As capturas realizadas pela ferramenta `tirar_print` são salvas em PNG dentro de uma pasta chamada `Shaula`, localizada na pasta Imagens do Windows.
+As capturas realizadas pela ferramenta `tirar_print` são salvas em formato PNG, dentro de uma pasta chamada `Shaula`, localizada na pasta Imagens do Windows.
 
 O caminho é obtido pela API `SHGetKnownFolderPath`. Se não for possível localizar a pasta, o sistema utiliza `~/Pictures/Shaula` como alternativa.
 
@@ -885,7 +906,7 @@ O reconhecimento ignora diferenças entre letras maiúsculas, minúsculas, acent
 
 Também aceita o nome da assistente antes do comando, como "Shaula, sair".
 
-Se a mensagem contiver outras instruções, ela será encaminhada normalmente ao modelo.
+Entretanto, se a mensagem contiver outras instruções, ela será encaminhada normalmente ao modelo.
 
 O comando `sair` encerra todas as janelas abertas, interrompe os trabalhos em andamento e tenta finalizar o Ollama.
 
@@ -905,7 +926,7 @@ Esses comandos exigem uma frase exata, sem palavras adicionais, para reduzir o r
 
 A exclusão afeta somente a conversa selecionada. As demais permanecem intactas.
 
-Também não é permitido excluir uma conversa pelo menu enquanto a IA ainda está respondendo.
+Também não é permitido excluir pelo menu uma conversa enquanto a IA ainda está respondendo.
 
 ### Links clicáveis
 
@@ -915,7 +936,7 @@ A classe `FormatadorTexto`, por meio de `linkificar_html()`, identifica links es
 
 A interface permite adicionar arquivos aos anexos utilizando o recurso de arrastar e soltar.
 
-Tanto `CampoMensagem` quanto `ShaulaWindow` aceitam essa interação.
+Tanto `CampoMensagem` quanto `ShaulaWindow` aceitam esse tipo de interação.
 
 Os arquivos adicionados ficam em `anexos_pendentes` até que a próxima mensagem seja enviada.
 
@@ -927,7 +948,7 @@ Como a Shaula pode executar operações diretamente no computador, algumas ferra
 
 | Ferramenta | Proteção implementada |
 |---|---|
-| `calcular` | Limita operações matemáticas muito grandes e trata erros de domínio, fatorial e resultados inválidos. |
+| `calcular` | Limita operações matemáticas muito grandes, evita cálculos que poderiam travar a thread e trata erros de domínio, fatorial e resultados inválidos. |
 | `abrir_programa` | Valida os nomes recebidos e exige confirmação quando o destino é um caminho, endereço ou script. |
 | `testar_ping` | Valida o endereço informado e limita o tempo de execução a 20 segundos. |
 | `finalizar_processo` | Impede o encerramento de processos protegidos do Windows e do próprio Ollama. |
@@ -938,7 +959,7 @@ Como a Shaula pode executar operações diretamente no computador, algumas ferra
 | Comandos externos | Utilizam limite de execução de 20 segundos. |
 | Janelas e monitores | Permitem identificar janelas semelhantes utilizando números, como `chrome 2` ou `Discord 1`. |
 
-A calculadora também possui verificações para impedir que expressões excessivamente grandes ocupem a thread por tempo indeterminado.
+A calculadora também possui verificações específicas para impedir que expressões excessivamente grandes ocupem a thread por tempo indeterminado.
 
 No caso de `finalizar_processo`, a proteção considera o nome real do processo, evitando que pequenas alterações no nome sejam utilizadas para contornar a restrição.
 
@@ -946,9 +967,9 @@ No caso de `finalizar_processo`, a proteção considera o nome real do processo,
 
 ## Confirmação de ações sensíveis
 
-Algumas operações podem provocar alterações importantes no computador. Por isso, a Shaula solicita autorização antes de executá-las.
+Algumas operações podem causar alterações importantes no computador e, por isso, exigem autorização antes de serem executadas.
 
-A interface apresenta uma caixa de diálogo com as opções **Sim, autorizar** e **Não**.
+A Shaula apresenta uma caixa de diálogo com as opções **Sim, autorizar** e **Não**.
 
 As confirmações são utilizadas nas seguintes situações:
 
@@ -961,41 +982,41 @@ As confirmações são utilizadas nas seguintes situações:
 | `abrir_arquivo` | Quando o arquivo é um programa, script ou documento com macros. |
 | `abrir_programa` | Quando o destino é um caminho, endereço, script ou atalho. |
 
-### Como funciona
+### Como funciona a confirmação
 
 A verificação acontece dentro de `RegistroFerramentas.executar()`, que consulta a `PoliticaConfirmacao` antes de permitir a execução.
 
-Assim, as regras ficam centralizadas, sem a necessidade de implementar uma confirmação separada em cada ferramenta.
+Dessa forma, as regras ficam centralizadas, sem precisar implementar uma confirmação separada dentro de cada ferramenta.
 
 O sistema também verifica os parâmetros obrigatórios antes de apresentar a caixa de diálogo.
 
-A autorização é considerada negativa nas seguintes situações:
+Por padrão, a resposta é sempre negativa caso:
 
-- O usuário escolhe não autorizar.
-- A caixa de diálogo é fechada.
-- A tecla `Esc` é pressionada.
-- O limite de 120 segundos é atingido.
-- A resposta é interrompida pelo botão ■.
-- A janela é fechada.
-- Não existe um componente de confirmação configurado.
+- O usuário escolha não autorizar.
+- A caixa seja fechada.
+- A tecla `Esc` seja pressionada.
+- O tempo limite de 120 segundos seja atingido.
+- A resposta seja interrompida pelo botão ■.
+- A janela seja fechada.
+- Não exista um componente de confirmação configurado.
 
-Na interface gráfica, a caixa é exibida pela classe `ConfirmadorQt`. Ela aparece à frente das outras janelas, restaurando a janela principal quando necessário e destacando seu ícone na barra de tarefas.
+Na interface gráfica, a caixa é exibida pela classe `ConfirmadorQt`. Ela é apresentada à frente das outras janelas, restaurando a janela principal quando necessário e destacando seu ícone na barra de tarefas.
 
-No terminal, a confirmação é realizada pela classe `ConfirmadorTerminal`, que apresenta:
+No terminal, a confirmação é feita pela classe `ConfirmadorTerminal`, que apresenta:
 
 ```text
 Autorizar? [s/N]
 ```
 
-A variável `SHAULA_CONFIRMAR=0` permite desativar todas as confirmações, mas essa opção não é recomendada.
+A variável `SHAULA_CONFIRMAR=0` permite desativar todas as confirmações, mas isso não é recomendado.
 
 ### Atalho para pedidos diretos de desligamento
 
-A versão 4.70 introduziu o `DetectorDesligar`, localizado em `tools/intencao_desligar.py`.
+Uma melhoria importante da versão 4.70 foi a criação do `DetectorDesligar`, localizado em `tools/intencao_desligar.py`.
 
-Ele foi criado para evitar que um pedido direto para desligar o computador seja tratado apenas como uma mensagem comum pelo modelo, sem que a ferramenta correspondente seja chamada.
+O objetivo é evitar situações em que o modelo recebe um pedido direto para desligar o computador, mas responde apenas em texto, sem chamar a ferramenta responsável pela operação.
 
-Agora, pedidos claros são identificados antes da consulta ao Ollama.
+Agora, pedidos claros são identificados antes da consulta ao modelo.
 
 Alguns exemplos:
 
@@ -1009,9 +1030,11 @@ Alguns exemplos:
 
 O detector também verifica se a mensagem não é uma pergunta, negação ou solicitação composta.
 
-Por exemplo, uma frase como "desligue o PC depois de baixar o arquivo" não ativa o atalho.
+Por exemplo, frases como "desligue o PC depois de baixar o arquivo" não ativam o atalho.
 
-**O atalho não elimina a confirmação.** Ele apenas garante que a ferramenta seja chamada, permitindo que o usuário autorize ou cancele a operação.
+O objetivo é garantir que apenas pedidos diretos sejam tratados dessa maneira.
+
+**Esse atalho não elimina a confirmação.** Ele apenas garante que a ferramenta seja chamada e que o usuário tenha a oportunidade de autorizar ou cancelar a operação.
 
 ---
 
@@ -1023,7 +1046,7 @@ Os lembretes criados pela Shaula são armazenados em:
 ~/.shaula/lembretes.json
 ```
 
-A persistência é feita por `ArmazenamentoJson`. O arquivo é a principal referência para determinar quais lembretes continuam ativos.
+A persistência é feita por `ArmazenamentoJson`, e o arquivo é a principal referência para determinar quais lembretes ainda estão ativos.
 
 Os temporizadores (`Timer`) são utilizados apenas para controlar o momento em que cada lembrete deve ser apresentado.
 
@@ -1043,7 +1066,7 @@ Também existe uma verificação do horário antes da entrega, evitando que temp
 
 ## Analisar a tela do computador
 
-A ferramenta `analisar_tela` permite fazer perguntas sobre o que está aparecendo no monitor.
+A ferramenta `analisar_tela` permite que o usuário faça perguntas sobre o que está aparecendo no monitor.
 
 Alguns exemplos:
 
@@ -1063,9 +1086,9 @@ Diferentemente de `tirar_print`, que salva uma captura no computador, essa ferra
 
 A ferramenta utiliza `CapturadorTela`, `GerenciadorJanelas` e `OcultadorJanelasProprias`.
 
-Como o Ollama não aceita imagens diretamente em mensagens de ferramenta, a Shaula utiliza um fluxo próprio: depois do resultado da ferramenta, a imagem é enviada em uma mensagem de usuário.
+Como o Ollama não aceita imagens diretamente em mensagens de ferramenta, a Shaula utiliza um fluxo próprio para enviar a imagem em uma mensagem de usuário logo após o resultado da ferramenta.
 
-Após a captura, as chamadas seguintes daquela solicitação são realizadas sem ferramentas, liberando espaço no contexto para a análise visual.
+Depois da captura, as chamadas seguintes daquela solicitação são realizadas sem ferramentas, liberando espaço no contexto para a análise visual.
 
 ---
 
@@ -1073,7 +1096,7 @@ Após a captura, as chamadas seguintes daquela solicitação são realizadas sem
 
 A Shaula foi desenvolvida principalmente para o Windows e utiliza recursos específicos desse sistema operacional.
 
-Alguns módulos dependem diretamente dessas funcionalidades:
+Entre os módulos que dependem dessas funcionalidades estão:
 
 | Módulo | Recurso utilizado |
 |---|---|
@@ -1096,9 +1119,9 @@ O gerenciamento de processos também utiliza `psutil`, mas as regras de proteç�
 
 ## Testes do projeto
 
-A versão 4.70 possui uma suíte com **553 casos de teste**, distribuídos em 21 arquivos dentro da pasta `tests/`.
+A versão 4.70 possui uma suíte com **572 casos de teste**, distribuídos em 21 arquivos dentro da pasta `tests/`.
 
-Os testes cobrem desde operações matemáticas e gerenciamento de arquivos até funcionalidades mais complexas, como reconhecimento de voz, interrupção de respostas, confirmações e persistência das conversas.
+Os testes verificam desde operações matemáticas e gerenciamento de arquivos até recursos mais complexos, como reconhecimento de voz, interrupção de respostas, confirmações e persistência de conversas.
 
 ### Distribuição dos testes
 
@@ -1106,9 +1129,10 @@ Os testes cobrem desde operações matemáticas e gerenciamento de arquivos até
 |---|---:|---|
 | `test_analisar_tela.py` | 44 | Captura e análise de tela. |
 | `test_anexos.py` | 17 | Processamento de imagens, PDFs, vídeos e textos. |
+| `test_banco_conversas.py` | 30 | Banco SQLite das conversas: esquema, transações, mensagens, apagar em cascata e acesso simultâneo. |
 | `test_voz.py` | 55 | Gravação, reconhecimento e tratamento de áudio. |
 | `test_lembretes.py` | 19 | Persistência e gerenciamento de lembretes. |
-| `test_menu_principal.py` | 29 | Menu principal, formulários, matrizes e cobertura das ferramentas. |
+| `test_menu_principal.py` | 48 | Menu principal: leitura de matrizes, campos e diálogo de parâmetros, catálogo (Composite), executor, submenus e cobertura das 40 ferramentas. |
 | `test_ollama_chat.py` | 10 | Interrupção das chamadas ao Ollama. |
 | `test_blocos_codigo.py` | 36 | Formatação e exibição de blocos de código. |
 | `test_confirmacao.py` | 76 | Confirmações e autorização de ações sensíveis. |
@@ -1130,25 +1154,25 @@ A contagem considera os casos parametrizados expandidos e foi obtida por anális
 
 ### O que os testes verificam
 
-Além do funcionamento normal, a suíte verifica situações que podem causar problemas durante o uso, como:
+Além das funcionalidades principais, a suíte também verifica situações específicas, como:
 
 - Arquivos corrompidos e anexos acima do limite permitido.
 - PDFs com texto e documentos escaneados.
 - Falhas de acesso ao microfone.
 - Cancelamento de gravações de voz.
 - Mensagens com erros que não devem ser salvas no histórico.
-- Limites de execução das ferramentas.
+- Limites de execução de ferramentas.
 - Confirmações negadas ou expiradas.
 - Lembretes cancelados em outras janelas.
 - Problemas de codificação de caracteres.
 - Proteção de processos importantes do Windows.
 - Interrupção de chamadas ao Ollama.
 
-Os testes de voz utilizam fontes de áudio e mecanismos de reconhecimento simulados. Dessa forma, não é necessário utilizar um microfone real para executar essa parte da suíte.
+Os testes de voz utilizam fontes de áudio e mecanismos de reconhecimento simulados, evitando a necessidade de um microfone real durante sua execução.
 
 ### Como executar os testes
 
-O instalador não inclui o `pytest`. Portanto, primeiro é necessário instalar essa dependência no ambiente virtual:
+O instalador não inclui o pytest. Portanto, antes de executar a suíte, é necessário instalar essa dependência no ambiente virtual:
 
 ```bash
 pip install pytest
@@ -1168,17 +1192,14 @@ QT_QPA_PLATFORM=offscreen python -m pytest tests
 
 ### Validação realizada na versão 4.70
 
-Durante a revisão do pacote, foram realizadas as seguintes verificações:
+Durante a revisão do pacote:
 
 - Todos os arquivos Python passaram pela compilação.
 - Foram conferidas as 40 ferramentas da interface gráfica e as 13 disponíveis no terminal.
 - Foram executados 216 casos de teste em ambiente Linux, sem PySide6, utilizando um executor compatível com pytest. Todos passaram.
 - Também foram realizadas 4.000 conversas aleatórias para verificar o funcionamento do `OrcamentoContexto`.
-- Os nomes de classes, funções, arquivos e variáveis citados na documentação foram conferidos com o código-fonte.
-- O menu principal foi aberto em uma `ShaulaWindow` real, em modo invisível (`QT_QPA_PLATFORM=offscreen`) e com as chamadas do Windows simuladas.
-- Todos os menus foram percorridos e foi verificado que as 40 ferramentas do registro podem ser acessadas.
-- Uma ferramenta foi executada pelo menu, e também foram exercitadas a troca de conversas, a alteração do nível de esforço e a chave de internet.
-- Os 29 testes de `test_menu_principal.py` passaram, mantendo-se também o resultado anterior do restante da suíte.
+- Os nomes de classes, funções, arquivos e variáveis citados nesta documentação foram conferidos com o código-fonte.
+- O menu principal foi aberto numa `ShaulaWindow` real, em modo invisível (`QT_QPA_PLATFORM=offscreen`) e com as chamadas do Windows simuladas. Foram percorridos todos os menus e conferido que as 40 ferramentas do registro são alcançadas. Uma ferramenta foi executada pelo menu e a troca de conversas, o nível de esforço e a chave de internet foram exercitados. Os 48 testes de `test_menu_principal.py` (que incluem a herança e o polimorfismo das classes do menu) passaram, e o restante da suíte manteve o resultado anterior.
 
 É importante destacar que a suíte completa da versão 4.70 e a interface gráfica não foram executadas durante essa revisão, devido à ausência de PySide6, Ollama e Windows no ambiente de validação.
 
@@ -1188,17 +1209,17 @@ Portanto, ainda é necessário executar os testes no ambiente Windows antes de c
 
 ## Limitações conhecidas
 
-Apesar das melhorias, a Shaula ainda possui algumas limitações que devem ser consideradas durante o uso.
+Apesar das melhorias, existem algumas limitações que devem ser consideradas ao utilizar a Shaula.
 
 ### Desempenho e memória
 
 - O desempenho do `qwen3.5:9b` depende bastante da GPU disponível.
 - Em placas com 8 GB de VRAM, os níveis Baixo e Médio são os mais indicados.
 - Se parte do modelo precisar ser executada pela CPU, a velocidade de resposta pode diminuir consideravelmente.
-- Os níveis mais altos utilizam mais memória e podem deixar o processamento lento.
+- Os níveis mais altos utilizam mais memória e podem deixar o processamento muito lento.
 - O raciocínio melhora a qualidade das respostas, mas aumenta o tempo necessário para gerá-las.
 
-Para verificar como o modelo está distribuído entre CPU e GPU, utilize:
+É possível verificar a distribuição do modelo entre CPU e GPU utilizando:
 
 ```bash
 ollama ps
@@ -1214,8 +1235,8 @@ ollama ps
 ### Pesquisa na internet
 
 - A identificação automática de perguntas utiliza heurísticas e pode realizar pesquisas desnecessárias ou deixar passar algumas perguntas.
-- Perguntas que dependem do histórico podem não iniciar uma pesquisa automática.
-- O próprio modelo ainda pode solicitar pesquisas quando considerar necessário.
+- Perguntas que dependem do histórico podem não disparar uma pesquisa automática.
+- O modelo ainda pode solicitar pesquisas por conta própria.
 
 ### Anexos
 
@@ -1228,7 +1249,7 @@ ollama ps
 ### Reconhecimento de voz
 
 - A primeira utilização exige internet para baixar o modelo `medium`, com aproximadamente 1,5 GB.
-- O reconhecimento é realizado pela CPU e pode levar alguns segundos após o término da gravação.
+- O reconhecimento é realizado pela CPU e pode levar alguns segundos depois que a gravação termina.
 - Não existe palavra de ativação nem escuta contínua.
 - A Shaula não possui síntese de voz para responder falando.
 - O modelo é descarregado após três minutos de inatividade e precisa ser carregado novamente no próximo uso.
@@ -1242,10 +1263,10 @@ ollama ps
 
 ### Menu principal
 
-- Os itens do menu executam as ferramentas diretamente, sem passar pelo modelo. Já `pesquisar_internet` e `analisar_tela` dependem do modelo e seguem pelo chat.
-- Uma ferramenta iniciada pelo menu não pode ser interrompida imediatamente.
-- Enquanto uma ferramenta do menu está em execução, não é possível enviar mensagens nem trocar de conversa.
-- O funcionamento do menu com as APIs reais do Windows, como captura de tela, gerenciamento de janelas e notificações, ainda precisa ser validado em um ambiente Windows.
+- Os itens do menu executam as ferramentas diretamente, sem o modelo. Já `pesquisar_internet` e `analisar_tela` dependem do modelo e seguem pelo chat.
+- Uma ferramenta iniciada pelo menu não pode ser interrompida, assim como acontece com as chamadas feitas pelo modelo.
+- Enquanto uma ferramenta do menu executa, não é possível enviar mensagens nem trocar de conversa.
+- O funcionamento do menu com as APIs reais do Windows (captura de tela, janelas, notificações) ainda precisa ser validado em um ambiente Windows.
 
 ### Recursos do Windows
 
@@ -1265,21 +1286,21 @@ ollama ps
 
 ## Inconsistências encontradas no pacote 4.70
 
-Durante a revisão do código, alguns pontos foram identificados e merecem atenção em futuras atualizações.
+Durante a revisão do código, algumas questões foram identificadas e merecem atenção em futuras atualizações.
 
-Eles não impedem necessariamente o funcionamento normal da Shaula, mas podem causar problemas durante a manutenção e a execução dos testes.
+Elas não impedem o funcionamento normal da Shaula, mas podem causar problemas durante o desenvolvimento e a execução dos testes.
 
 1. **Localização do `conftest.py`:** o arquivo responsável por isolar a pasta pessoal durante os testes está em `tools/conftest.py`, e não em `tests/conftest.py`. Por isso, os testes da pasta `tests/` podem acessar os dados reais de `~/.shaula`. O ideal seria mover esse arquivo para a pasta correta.
 
-2. **Arquivos antigos dentro de `tools/`:** existem cópias antigas de `interface.py` e alguns arquivos de testes que também aparecem na pasta `tests/`. Esses arquivos podem causar confusão durante a manutenção e poderiam ser removidos.
+2. **Arquivos antigos dentro de `tools/`:** existem cópias antigas de `interface.py` e alguns arquivos de testes que também aparecem na pasta `tests/`. Eles podem gerar confusão durante a manutenção e poderiam ser removidos.
 
-3. **Dependência `requests`:** o instalador instala e verifica essa biblioteca, mas nenhum módulo do projeto a utiliza diretamente. A pesquisa na internet utiliza `urllib`.
+3. **Dependência requests:** o instalador instala e verifica `requests`, mas nenhum módulo do projeto utiliza essa biblioteca. A pesquisa na internet utiliza `urllib`.
 
-4. **Pytest não incluído no instalador:** embora o projeto possua uma suíte de testes, o instalador não instala o `pytest` automaticamente.
+4. **Pytest não incluído no instalador:** embora o projeto possua uma suíte de testes, o instalador não instala o pytest automaticamente.
 
 5. **Exclusão de conversas sem confirmação:** os comandos para apagar o histórico exigem frases exatas, mas ainda não apresentam uma caixa de confirmação. Adicionar essa proteção seria uma melhoria interessante.
 
-6. **Ferramentas não interrompíveis:** o botão de interrupção cancela a chamada ao modelo, mas não consegue interromper imediatamente uma ferramenta que já esteja em execução. Algumas operações podem levar bastante tempo e causar problemas ao fechar a janela.
+6. **Ferramentas não interrompíveis:** o botão de interrupção cancela a chamada ao modelo, mas não consegue interromper imediatamente uma ferramenta que já esteja executando. Algumas operações podem levar bastante tempo e causar problemas ao fechar a janela.
 
 7. **Caixas de confirmação:** as instâncias de `QMessageBox` permanecem como filhas da janela depois de utilizadas, podendo acumular objetos durante o uso prolongado.
 
@@ -1299,8 +1320,8 @@ Documentação/
 └── Shaula_Casos_de_Uso_4.70.md
 ```
 
-O diagrama UML apresenta a estrutura interna da versão 4.70, incluindo classes, relacionamentos, serviços, ferramentas e padrões de projeto utilizados.
+O diagrama UML representa a estrutura interna da versão 4.70, incluindo as classes, seus relacionamentos, serviços, ferramentas e padrões de projeto utilizados.
 
-Já a documentação dos casos de uso descreve as funcionalidades disponíveis para o usuário e as interações realizadas com os sistemas externos.
+Já a documentação dos casos de uso apresenta as funcionalidades disponíveis para o usuário e as interações realizadas com os sistemas externos.
 
-Os dois documentos foram atualizados para acompanhar a organização e os recursos da versão atual do projeto.
+Ambos foram atualizados para acompanhar a versão atual do projeto.
