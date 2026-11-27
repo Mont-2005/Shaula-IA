@@ -1,0 +1,113 @@
+digraph ShaulaUseCases {
+    graph [fontname="Arial", rankdir=TB, labelloc=t, nodesep=0.25, ranksep=0.8];
+    node  [fontname="Arial", fontsize=12];
+    edge  [fontname="Arial", fontsize=10];
+
+    // ---------------- Atores ----------------
+    usuario  [shape=plaintext, label=" O\n/|\\\n/ \\\nUsuário"];
+    ollama   [shape=plaintext, label="«sistema externo»\nOllama / Qwen"];
+    internet [shape=plaintext, label="«sistema externo»\nInternet"];
+    windows  [shape=plaintext, label="«sistema externo»\nWindows"];
+
+    // ---------------- Fronteira do sistema ----------------
+    subgraph cluster_shaula {
+        label="Shaula IA 4.75";
+        fontsize=17;
+        fontname="Arial Bold";
+        style=rounded;
+
+        chat     [shape=ellipse, label="Conversar com a Shaula\n(GUI)"];
+        cli      [shape=ellipse, label="Conversar pelo modo CLI"];
+        conv     [shape=ellipse, label="Gerenciar conversas\n(criar, selecionar, renomear,\nfixar/desafixar, excluir, nova janela)"];
+        netstate [shape=ellipse, label="Controlar autorização\nde Internet"];
+        esforco  [shape=ellipse, label="Escolher nível de esforço\n(Baixo, Médio, Alto, Extra, Máx)"];
+        menu     [shape=ellipse, label="Usar o menu principal\n(acesso a todas as funcionalidades)"];
+        form     [shape=ellipse, label="Preencher parâmetros\nda ação (formulário)"];
+        iniciar  [shape=ellipse, label="Abrir a Shaula\n(sem console ou com console)"];
+        verbanco [shape=ellipse, label="Ver o banco de dados\n(somente leitura)"];
+
+        clinote  [shape=note, label="CLI: 13 ferramentas\n(cálculos + abrir programa +\nbuscar/abrir arquivo)"];
+
+        attach   [shape=ellipse, label="Enviar anexos\n(imagem, PDF, vídeo, texto/código)"];
+        colar    [shape=ellipse, label="Colar imagem\n(Ctrl+V)"];
+        ampliar  [shape=ellipse, label="Ver imagem anexada\ninteira (clique)"];
+        voz      [shape=ellipse, label="Falar um comando\n(microfone, Ctrl+M)"];
+        parar    [shape=ellipse, label="Interromper a resposta\n(■ ou Esc)"];
+        telaia   [shape=ellipse, label="Perguntar sobre a tela\n(a Shaula olha um monitor)"];
+        copiar   [shape=ellipse, label="Copiar código\nde uma resposta"];
+        search   [shape=ellipse, label="Pesquisar na Internet"];
+        checknet [shape=ellipse, label="Verificar autorização\nde Internet"];
+        tool     [shape=ellipse, label="Solicitar execução\nde ferramenta"];
+
+        confirmar [shape=ellipse, label="Confirmar ação sensível\n(Sim / Não, sempre à frente)"];
+        winact    [shape=ellipse, label="Interagir com o Windows"];
+        calc      [shape=ellipse, label="Executar cálculos\ne operações matriciais"];
+
+        files     [shape=ellipse, label="Buscar / abrir arquivos"];
+        programs  [shape=ellipse, label="Abrir / fechar programas"];
+        windows_uc[shape=ellipse, label="Gerenciar janelas\ne monitores"];
+        system    [shape=ellipse, label="Controlar sistema\ne processos"];
+        screen    [shape=ellipse, label="Capturar a tela"];
+        clip      [shape=ellipse, label="Copiar / colar texto"];
+        reminders [shape=ellipse, label="Gerenciar lembretes"];
+        network   [shape=ellipse, label="Consultar rede\n(IP, Wi-Fi, ping)"];
+    }
+
+    // ---------------- Usuário ----------------
+    usuario -> chat;
+    usuario -> cli;
+    usuario -> conv;
+    usuario -> netstate;
+    usuario -> esforco;
+    usuario -> menu;
+    usuario -> iniciar;
+    usuario -> verbanco;
+
+    // ---------------- Sistemas externos ----------------
+    chat -> ollama [arrowhead=none];
+    cli  -> ollama [arrowhead=none];
+    cli  -> clinote [style=dashed, arrowhead=none];
+    voz  -> windows [arrowhead=none];
+    telaia -> windows [arrowhead=none];
+    copiar -> windows [arrowhead=none];
+    search -> internet [arrowhead=none];
+    winact -> windows [arrowhead=none];
+    colar  -> windows [arrowhead=none];
+    iniciar -> windows [arrowhead=none];
+    iniciar -> ollama [arrowhead=none];
+
+    // ---------------- Extensões da conversa ----------------
+    attach -> chat [style=dashed, label="«extend»"];
+    colar   -> attach [style=dashed, label="«extend»"];
+    ampliar -> attach [style=dashed, label="«extend»"];
+    voz    -> chat [style=dashed, label="«extend»"];
+    parar  -> chat [style=dashed, label="«extend»"];
+    telaia -> chat [style=dashed, label="«extend»"];
+    copiar -> chat [style=dashed, label="«extend»"];
+    search -> chat [style=dashed, label="«extend»"];
+    tool   -> chat [style=dashed, label="«extend»"];
+    search -> checknet [style=dashed, label="«include»"];
+    confirmar -> winact [style=dashed, label="«extend»"];
+
+
+    // ---------------- Menu principal ----------------
+    form -> menu [style=dashed, label="«extend»"];
+    menu -> winact [style=dashed, label="«include»", constraint=false];
+    menu -> calc [style=dashed, label="«include»", constraint=false];
+    menu -> conv [style=dashed, label="«include»", constraint=false];
+    menu -> esforco  [style=dashed, label="«include»", constraint=false];
+    menu -> netstate [style=dashed, label="«include»", constraint=false];
+
+    // ---------------- Generalizações ----------------
+    calc  -> tool [arrowhead=empty, label="generalização"];
+    winact -> tool [arrowhead=empty, label="generalização"];
+
+    files      -> winact [arrowhead=empty];
+    programs   -> winact [arrowhead=empty];
+    windows_uc -> winact [arrowhead=empty];
+    system     -> winact [arrowhead=empty];
+    screen     -> winact [arrowhead=empty];
+    clip       -> winact [arrowhead=empty];
+    reminders  -> winact [arrowhead=empty];
+    network    -> winact [arrowhead=empty];
+}
